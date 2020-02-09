@@ -1,24 +1,7 @@
 # matsuri.icu
 
-## Project setup
-```
-npm install
-```
+---
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+别骂了别骂了孩子要被骂傻了
 
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+效果直接看 https://matsuri.icu 吧，大概这就是弱弱弱代码吧……

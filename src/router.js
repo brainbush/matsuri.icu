@@ -5,6 +5,7 @@ import Home from "@/views/Home";
 import Channel from "@/views/Channel";
 import Detail from "@/views/Detail";
 import Viewer from "@/views/Viewer"
+import About from "@/views/About";
 
 Vue.use(Router);
 
@@ -13,6 +14,7 @@ const routes = [
     {path: '/channel/:channel', name: 'channel', component: Channel},
     {path: '/detail/:id', name: 'detail', component: Detail},
     {path: '/viewer/:id', name: 'viewer', component: Viewer},
+    {path: '/about', name: 'about', component: About},
     {path: '*', redirect: '/'}
 ];
 

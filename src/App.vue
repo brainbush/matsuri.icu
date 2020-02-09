@@ -4,6 +4,9 @@
             <div class="top_link">
                 <router-link :to="{name:'home'}" class="navbar-brand">🍊</router-link>
             </div>
+            <div class="nav-item text-white">
+                <router-link type="button" class="btn btn-dark" :to="{name:'about'}">？</router-link>
+            </div>
         </nav>
         <div class="container pt-3">
             <router-view/>
