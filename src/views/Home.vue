@@ -23,6 +23,8 @@
             return -1;
         if (!a.is_live && b.is_live)
             return 1;
+        if (!(a.is_live ^ b.is_live))
+            return b.last_live - a.last_live;
         return 0;
     }
 
@@ -32,13 +34,14 @@
         data() {
             return {
                 channel_list: JSON.parse(localStorage.getItem('channel_list')),
-                search_query: null
+                search_query: null,
+                showed: 30
             }
         },
         computed: {
             query_result: function () {
-                if (this.search_query === null)
-                    return this.channel_list;
+                if (this.search_query === null || this.search_query.length === 0)
+                    return this.channel_list.filter((channel, index) => index < this.showed);
                 let query_lowercase = this.search_query.toLowerCase();
                 return this.channel_list.filter((item) => {
                     return item.name.toLowerCase().match(query_lowercase)
@@ -46,6 +49,7 @@
             }
         },
         mounted() {
+            window.addEventListener('scroll', this.scrollFunc);
             this.$http
                 .get('https://api.neeemooo.com/channel')
                 .then(function (response) {
@@ -57,6 +61,14 @@
                 .catch(error => {
                     console.log(error)
                 })
+        },
+        methods: {
+            scrollFunc() {
+                if ((document.body.clientHeight - window.scrollY - window.innerHeight < (document.body.clientHeight / this.showed)) && (this.search_query === null)) {
+                    if (this.showed < this.channel_list.length)
+                        this.showed += 30;
+                }
+            }
         }
     }
 </script>

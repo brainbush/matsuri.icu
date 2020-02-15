@@ -25,18 +25,6 @@
                 data: {}
             }
         },
-        computed: {
-            // clip_info: function () {
-            //     if (this.data.hasOwnProperty('clip_info'))
-            //         return this.data.clip_info;
-            //     else return {}
-            // },
-            // full_comments: function () {
-            //     if (this.data.hasOwnProperty('full_comments')) {
-            //         return this.data.full_comments
-            //     } else return [];
-            // },
-        },
         mounted() {
             window.addEventListener('scroll', this.scrollFunc);
             this.$http

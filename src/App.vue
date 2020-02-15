@@ -1,11 +1,13 @@
 <template>
     <div id="app">
         <nav class="navbar navbar-dark bg-dark sticky-top">
-            <div class="top_link">
+            <div class="top_link" style="padding-left: 20px">
                 <router-link :to="{name:'home'}" class="navbar-brand">🍊</router-link>
             </div>
-            <div class="nav-item text-white">
-                <router-link type="button" class="btn btn-dark" :to="{name:'about'}">？</router-link>
+            <div class="navbar-nav" style="padding-right: 20px">
+                <div class="nav-item text-white">
+                    <router-link class="nav-link" :to="{name:'about'}">？</router-link>
+                </div>
             </div>
         </nav>
         <div class="container pt-3">
@@ -23,7 +25,4 @@
 
 <style lang="scss">
     @import "node_modules/bootstrap/scss/bootstrap";
-    .top_link{
-        padding-left: 20px;
-    }
 </style>
