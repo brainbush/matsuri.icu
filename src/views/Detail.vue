@@ -11,9 +11,25 @@
             <hr>
         </div>
         <div class="container comment-container">
-            <h3>全部弹幕</h3>
-            <LiveComment v-for="(comment,index) in comments_showed" :comment="comment" :key="index"
-                         :viewer_view="false"/>
+            <div class="row">
+                <div class="col text-left">
+                    <h3>全部弹幕</h3>
+                </div>
+                <div class="col text-right mid">
+                    <div class="btn-group mr-2">
+                        <button type="button" v-on:click="list_status(0)" id="state0"
+                                class="btn btn-outline-primary active">全部
+                        </button>
+                        <button type="button" v-on:click="list_status(1)" id="state1" class="btn btn-outline-primary">
+                            翻译man
+                        </button>
+                        <button type="button" v-on:click="list_status(2)" id="state2" class="btn btn-outline-primary">
+                            礼物
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <LiveComment v-for="comment in comments_showed" :comment="comment" :key="comment.i" :viewer_view="false"/>
 
         </div>
     </div>
@@ -31,7 +47,8 @@
             return {
                 id: this.$route.params.id,
                 data: {},
-                showed: 500
+                showed: 500,
+                state: 0
             }
         },
         computed: {
@@ -62,11 +79,31 @@
             },
             full_comments: function () {
                 if (this.clip_detail.hasOwnProperty('full_comments')) {
-                    return this.clip_detail.full_comments
+                    let full_comments = [];
+                    this.clip_detail.full_comments.forEach(function (comment, i) {
+                        comment.i = i;
+                        full_comments.push(comment)
+                    });
+                    return full_comments
                 } else return [];
             },
+            comments_showed_full: function () {
+                if (this.state === 0) {
+                    return this.full_comments;
+                } else if (this.state === 1) {
+                    // 可它实在是太慢了!
+                    // let re = RegExp('(^【)+(.*)+(】+$)');
+                    // return this.full_comments.filter(comment => re.test(comment.text))
+                    return this.full_comments.filter(comment => {
+                        if (comment.hasOwnProperty('text'))
+                            return comment.text.startsWith('【') & comment.text.endsWith('】');
+                        return false;
+                    })
+                } else
+                    return this.full_comments.filter(comment => comment.hasOwnProperty('gift_name'));
+            },
             comments_showed: function () {
-                return this.full_comments.filter((comment, index) => index < this.showed)
+                return this.comments_showed_full.filter((comment, index) => index < this.showed)
             }
         },
         mounted() {
@@ -82,9 +119,17 @@
         methods: {
             scrollFunc() {
                 if (document.body.clientHeight - window.scrollY - window.innerHeight < (document.body.clientHeight / this.showed)) {
-                    if (this.showed < this.full_comments.length)
+                    if (this.showed < this.comments_showed_full.length)
                         this.showed += 500;
                 }
+            },
+            list_status: function (state) {
+                if (state === this.state)
+                    return;
+                document.getElementById('state' + this.state.toString()).classList.remove('active');
+                document.getElementById('state' + state.toString()).classList.add('active');
+                this.state = state;
+                this.showed = 500;
             }
         }
     }
@@ -93,5 +138,10 @@
 <style scoped>
     .comment-container {
         padding: 5px 15px;
+    }
+
+    .mid {
+        margin-top: auto;
+        margin-bottom: auto;
     }
 </style>
