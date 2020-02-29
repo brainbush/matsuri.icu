@@ -100,7 +100,7 @@
                         return false;
                     })
                 } else
-                    return this.full_comments.filter(comment => comment.hasOwnProperty('gift_name'));
+                    return this.full_comments.filter(comment => comment.hasOwnProperty('gift_name') || comment.hasOwnProperty('superchat_price'));
             },
             comments_showed: function () {
                 return this.comments_showed_full.filter((comment, index) => index < this.showed)
