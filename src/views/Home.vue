@@ -40,6 +40,9 @@
         },
         computed: {
             query_result: function () {
+                if (this.channel_list === null) {
+                    return [];
+                }
                 if (this.search_query === null || this.search_query.length === 0)
                     return this.channel_list.filter((channel, index) => index < this.showed);
                 let query_lowercase = this.search_query.toLowerCase();
