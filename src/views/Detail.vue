@@ -96,7 +96,8 @@
                     // return this.full_comments.filter(comment => re.test(comment.text))
                     return this.full_comments.filter(comment => {
                         if (comment.hasOwnProperty('text'))
-                            return comment.text.startsWith('【') & comment.text.endsWith('】');
+                            return (comment.text.startsWith('【') & comment.text.endsWith('】')) |
+                                (comment.text.startsWith('（') & comment.text.endsWith('）'));
                         return false;
                     })
                 } else
