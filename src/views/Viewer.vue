@@ -1,8 +1,7 @@
 <template>
-    <div class="container">
+    <div>
         <div v-for="(clip,index) in data" :key="index">
             <ClipList :clip="clip.clip_info" :detail_view="true"/>
-            <div class="row"></div>
             <div class="container comment-container">
                 <LiveComment v-for="(comment,index) in clip.full_comments" :key="index" :comment="comment"
                              :viewer_view="true"/>
@@ -26,12 +25,14 @@
             }
         },
         mounted() {
+            this.$parent.loading = true;
             window.addEventListener('scroll', this.scrollFunc);
             this.$http
                 .get('https://api.neeemooo.com/viewer/' + this.id)
                 .then(function (response) {
                     if (response.data.status === 0) {
                         this.data = response.data.data;
+                        this.$parent.loading = false;
                     }
                 }.bind(this))
         },

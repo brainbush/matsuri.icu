@@ -10,6 +10,12 @@
                 </div>
             </div>
         </nav>
+        <div class="d-flex justify-content-center align-items-center" v-if="loading"
+             style="position: fixed; width: 100%;height: 100%;z-index: 2;background-color: rgba(255,255,255,0.5)">
+            <div class="spinner-border" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
         <div class="container pt-3">
             <router-view/>
         </div>
@@ -19,7 +25,12 @@
 <script>
     export default {
         name: 'app',
-        components: {}
+        components: {},
+        data() {
+            return {
+                loading: false
+            }
+        }
     }
 </script>
 

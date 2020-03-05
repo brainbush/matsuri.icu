@@ -15,7 +15,7 @@
                                v-if="channel.is_live" class="badge badge-primary">直播中</a></h5>
                     </div>
                     <div class="row">
-                        <div class="col">
+                        <div class="col-6 col-md">
                             <div class="row">
                                 <div class="tag_name">上次直播</div>
                             </div>
@@ -23,7 +23,7 @@
                                 <div class="tag_value pt-1" :title="last_live_hover">{{last_live}}</div>
                             </div>
                         </div>
-                        <div class="col">
+                        <div class="col-6 col-md">
                             <div class="row">
                                 <div class="tag_name">上次直播弹幕数</div>
                             </div>
@@ -31,7 +31,7 @@
                                 <div class="tag_value pt-1">{{last_danmu}}</div>
                             </div>
                         </div>
-                        <div class="col">
+                        <div class="col-6 col-md">
                             <div class="row">
                                 <div class="tag_name">累计收录片段数</div>
                             </div>
@@ -39,7 +39,7 @@
                                 <div class="tag_value pt-1">{{total_clips}}</div>
                             </div>
                         </div>
-                        <div class="col">
+                        <div class="col-6 col-md">
                             <div class="row">
                                 <div class="tag_name">累计弹幕数</div>
                             </div>

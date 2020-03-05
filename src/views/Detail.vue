@@ -1,12 +1,11 @@
 <template>
-    <div class="container">
+    <div>
         <ClipList :clip="clip_info" v-if="Object.entries(clip_info).length" :detail_view="true"/>
         <div class="row">
             <div class="col">
                 <ve-line :data="chartData"/>
             </div>
         </div>
-        <div class="row"></div>
         <div class="col-12">
             <hr>
         </div>
@@ -48,7 +47,8 @@
                 id: this.$route.params.id,
                 data: {},
                 showed: 500,
-                state: 0
+                state: 0,
+                loading: true
             }
         },
         computed: {
@@ -108,12 +108,14 @@
             }
         },
         mounted() {
+            this.$parent.loading = true;
             window.addEventListener('scroll', this.scrollFunc);
             this.$http
                 .get('https://api.neeemooo.com/clip/' + this.id)
                 .then(function (response) {
                     if (response.data.status === 0) {
                         this.data = response.data.data;
+                        this.$parent.loading = false;
                     }
                 }.bind(this))
         },

@@ -62,6 +62,7 @@
             },
             get_list: function (state) {
                 let url;
+                this.$parent.loading = true;
                 if (state === 0) {
                     url = 'https://api.neeemooo.com/channel/' + this.channel.toString() + '/clips/all';
                 } else if (state === 1) {
@@ -73,7 +74,8 @@
                     .get(url)
                     .then(function (response) {
                         if (response.data.status === 0) {
-                            this.clip_list = response.data.data
+                            this.clip_list = response.data.data;
+                            this.$parent.loading = false;
                         }
                     }.bind(this))
             }

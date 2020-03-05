@@ -23,7 +23,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div v-if="detail_view" class="col">
+                        <div v-if="detail_view" class="col-6 col-md">
                             <div class="row">
                                 <div class="tag_name">频道</div>
                             </div>
@@ -31,7 +31,7 @@
                                 <div class="tag_value">{{channel_name}}</div>
                             </div>
                         </div>
-                        <div class="col">
+                        <div class="col-6 col-md">
                             <div class="row">
                                 <div class="tag_name">状态</div>
                             </div>
@@ -39,7 +39,7 @@
                                 <div class="tag_value">{{status}}</div>
                             </div>
                         </div>
-                        <div class="col">
+                        <div class="col-6 col-md">
                             <div class="row">
                                 <div class="tag_name">开始</div>
                             </div>
@@ -47,7 +47,7 @@
                                 <div class="tag_value">{{start_time}}</div>
                             </div>
                         </div>
-                        <div class="col">
+                        <div class="col-6 col-md">
                             <div class="row">
                                 <div class="tag_name">结束</div>
                             </div>
@@ -55,7 +55,7 @@
                                 <div class="tag_value">{{end_time}}</div>
                             </div>
                         </div>
-                        <div class="col">
+                        <div class="col-6 col-md">
                             <div class="row">
                                 <div class="tag_name">弹幕</div>
                             </div>

@@ -53,12 +53,15 @@
         },
         mounted() {
             window.addEventListener('scroll', this.scrollFunc);
+            if (this.channel_list === null)
+                this.$parent.loading = true;
             this.$http
                 .get('https://api.neeemooo.com/channel')
                 .then(function (response) {
                     if (response.data.status === 0) {
                         this.channel_list = response.data.data.sort(true_compare);
-                        localStorage.setItem('channel_list', JSON.stringify(response.data.data))
+                        localStorage.setItem('channel_list', JSON.stringify(response.data.data));
+                        this.$parent.loading = false;
                     }
                 }.bind(this))
                 .catch(error => {
