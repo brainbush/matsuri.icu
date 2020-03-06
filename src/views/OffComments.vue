@@ -75,8 +75,10 @@
                         this.$parent.$parent.loading = false;
                         if (response.data.data) {
                             this.data = response.data.data;
-                            this.list_status(0, true)
+                        } else {
+                            this.data = {}
                         }
+                        this.list_status(0, true)
                     }
                 }.bind(this))
             },
@@ -89,8 +91,6 @@
             list_status: function (state, refresh) {
                 if (state === this.state && refresh === false)
                     return;
-                if (refresh)
-                    this.comments_showed_full = [];
                 document.getElementById('state' + this.state.toString()).classList.remove('active');
                 document.getElementById('state' + state.toString()).classList.add('active');
                 this.state = state;
