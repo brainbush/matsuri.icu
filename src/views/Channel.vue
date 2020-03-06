@@ -10,12 +10,11 @@
                     <div class="row float-right">
                         <h6 class="mid">状态：</h6>
                         <div class="btn-group">
-                            <button v-on:click="list(0)" id="state0" type="button"
-                                    class="btn btn-outline-primary active">全部
+                            <button v-on:click="list()" id="on_button" type="button"
+                                    class="btn btn-outline-primary active">直播
                             </button>
-                            <button v-on:click="list(1)" id="state1" type="button" class="btn btn-outline-primary">直播
-                            </button>
-                            <button v-on:click="list(2)" id="state2" type="button" class="btn btn-outline-primary">下播
+                            <button v-on:click="off_list()" id="off_button" type="button"
+                                    class="btn btn-outline-primary">下播
                             </button>
                         </div>
                     </div>
@@ -27,22 +26,29 @@
                 <hr>
             </div>
         </div>
-        <ClipList v-for="clip in clip_list" :clip="clip" :detail_view="false" :key="clip.id"/>
+        <div v-if="online_clips">
+            <ClipList v-for="clip in clip_list" :clip="clip" :detail_view="false" :key="clip.id"/>
+        </div>
+        <div v-else>
+            <OffComments :uid="channel"></OffComments>
+        </div>
     </div>
 </template>
 
 <script>
     import ClipList from "@/components/ClipList";
+    import OffComments from "@/views/OffComments";
 
     export default {
         name: "Channel",
-        components: {ClipList},
+        components: {ClipList, OffComments},
         data() {
             return {
-                state: 0,
+                // state: 0,
                 channel_info: {},
                 channel: parseInt(this.$route.params.channel),
-                clip_list: []
+                clip_list: [],
+                online_clips: true
             }
         },
         created() {
@@ -52,24 +58,26 @@
             this.channel_info = channel_list.find(x => x.bilibili_uid === this.channel)
         },
         methods: {
-            list: function (state) {
-                if (state === this.state)
+            list: function () {
+                if (this.online_clips)
                     return;
-                document.getElementById('state' + this.state.toString()).classList.remove('active');
-                document.getElementById('state' + state.toString()).classList.add('active');
-                this.state = state;
-                this.get_list(state);
+                document.getElementById('off_button').classList.remove('active');
+                document.getElementById('on_button').classList.add('active');
+                this.online_clips = true;
+                this.get_list();
             },
-            get_list: function (state) {
+            off_list: function () {
+                if (!this.online_clips)
+                    return;
+                document.getElementById('on_button').classList.remove('active');
+                document.getElementById('off_button').classList.add('active');
+                this.online_clips = false;
+            },
+            get_list: function () {
                 let url;
                 this.$parent.loading = true;
-                if (state === 0) {
-                    url = 'https://api.neeemooo.com/channel/' + this.channel.toString() + '/clips/all';
-                } else if (state === 1) {
-                    url = 'https://api.neeemooo.com/channel/' + this.channel.toString() + '/clips/online';
-                } else {
-                    url = 'https://api.neeemooo.com/channel/' + this.channel.toString() + '/clips/offline';
-                }
+                url = 'https://api.neeemooo.com/channel/' + this.channel.toString() + '/clips';
+
                 this.$http
                     .get(url)
                     .then(function (response) {

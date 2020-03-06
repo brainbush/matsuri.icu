@@ -29,16 +29,44 @@
             comment: Object,
             viewer_view: Boolean
         },
-        data() {
-            return {
-                time: this.$moment(this.comment.time).format('HH:mm:ss.SSS'),
-                text: this.comment.text,
-                user_id: this.comment.user_id,
-                username: this.comment.username,
-                gift_name: this.comment.gift_name,
-                gift_price: this.comment.gift_price,
-                gift_num: this.comment.gift_num,
-                superchat_price: this.comment.superchat_price
+        computed: {
+            time: function () {
+                return this.$moment(this.comment.time).format('HH:mm:ss.SSS')
+            },
+            text: function () {
+                if (this.comment)
+                    return this.comment.text;
+                else return null;
+            },
+            user_id: function () {
+                if (this.comment)
+                    return this.comment.user_id;
+                else return ''
+            },
+            username: function () {
+                if (this.comment)
+                    return this.comment.username;
+                else return ''
+            },
+            gift_name: function () {
+                if (this.comment)
+                    return this.comment.gift_name;
+                else return ''
+            },
+            gift_price: function () {
+                if (this.comment)
+                    return this.comment.gift_price;
+                else return null;
+            },
+            gift_num: function () {
+                if (this.comment)
+                    return this.comment.gift_num;
+                else return ''
+            },
+            superchat_price: function () {
+                if (this.comment)
+                    return this.comment.superchat_price;
+                else return ''
             }
         }
     }

@@ -47,8 +47,7 @@
                 id: this.$route.params.id,
                 data: {},
                 showed: 500,
-                state: 0,
-                loading: true
+                state: 0
             }
         },
         computed: {
