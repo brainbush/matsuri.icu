@@ -17,6 +17,7 @@
     "vue": "^2.6.10",
     "vue-gtm": "^2.2.0",
     "vue-router": "^3.1.5",
+    "vue2-datepicker": "^3.4.1",
     "webpack": "latest"
   },
   "devDependencies": {
