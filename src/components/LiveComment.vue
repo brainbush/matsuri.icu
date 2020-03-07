@@ -15,7 +15,7 @@
                     <span v-if="this.superchat_price" style="padding-left: 15px;color: brown">SuperChat: ￥{{superchat_price}}</span>
                 </div>
                 <div v-else>
-                    <div style="color:red;padding-left: 15px">礼物：{{gift_name}}，￥{{gift_price}}×{{gift_num}}</div>
+                    <div style="color:red;padding-left: 15px">礼物：{{gift_name}}×{{gift_num}}，￥{{gift_price}}</div>
                 </div>
             </div>
         </div>
