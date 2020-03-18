@@ -67,12 +67,12 @@
             },
             live_url: function () {
                 if (this.channel.hasOwnProperty('bilibili_live_room'))
-                    return 'https://live.bilibili.com/' + this.channel.bilibili_live_room
+                    return 'https://live.bilibili.com/' + this.channel.bilibili_live_room;
                 return ''
             },
             last_live: function () {
                 let timestamp = this.channel.last_live;
-                if(timestamp === null) return '无';
+                if (timestamp === null) return '无';
                 if (this.$moment().diff(timestamp, 'days') > 7) {
                     return this.$moment(timestamp).format('YYYY年MM月DD日');
                 }
@@ -80,7 +80,6 @@
             },
             last_live_hover: function () {
                 return this.$moment(this.channel.last_live).format('YYYY/M/D H:mm:ss');
-
             },
             total_clips: function () {
                 if (this.channel.total_clips > 0)

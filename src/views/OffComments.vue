@@ -14,10 +14,8 @@
                     </button>
                 </div>
             </div>
-            <div class="container">
-                <LiveComment v-for="comment in comments_showed" v-bind:comment="comment"
-                             :key="comment_date_input+comment.i" :viewer_view="true"/>
-            </div>
+            <LiveComment v-for="comment in comments_showed" v-bind:comment="comment"
+                         :key="comment_date_input+comment.i" :viewer_view="true"/>
         </div>
     </div>
 </template>
@@ -109,5 +107,10 @@
 </script>
 
 <style scoped>
+    @media (max-width: 540px) {
+        .mx-datepicker {
+            width: 150px
+        }
+    }
 
 </style>

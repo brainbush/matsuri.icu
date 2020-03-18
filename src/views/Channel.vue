@@ -2,21 +2,23 @@
     <div>
         <div class="container">
             <div class="row container">
-                <img class="image_container_channel" alt="" :src="face">
+                <a :href="space" target="_blank" rel="noopener noreferrer"><img class="image_container_channel"
+                                                                                alt="" :src="face"></a>
                 <div class="col mid" v-if="chanel_name">
-                    <h3>{{chanel_name}}</h3>
+                    <a :href="space" target="_blank" rel="noopener noreferrer"><h3>{{chanel_name}}</h3></a>
                 </div>
                 <div class="col mid">
-                    <div class="row float-right">
-                        <h6 class="mid">状态：</h6>
-                        <div class="btn-group">
-                            <button v-on:click="list()" id="on_button" type="button"
-                                    class="btn btn-outline-primary active">直播
-                            </button>
-                            <button v-on:click="off_list()" id="off_button" type="button"
-                                    class="btn btn-outline-primary">下播
-                            </button>
-                        </div>
+                    <div class="float-right">
+                        <label>状态：
+                            <div class="btn-group">
+                                <button v-on:click="list()" id="on_button" type="button"
+                                        class="btn btn-outline-primary active">直播
+                                </button>
+                                <button v-on:click="off_list()" id="off_button" type="button"
+                                        class="btn btn-outline-primary">下播
+                                </button>
+                            </div>
+                        </label>
                     </div>
                 </div>
             </div>
@@ -30,7 +32,7 @@
             <ClipList v-for="clip in clip_list" :clip="clip" :detail_view="false" :key="clip.id"/>
         </div>
         <div v-else>
-            <OffComments :uid="channel"></OffComments>
+            <OffComments :uid="channel"/>
         </div>
     </div>
 </template>
@@ -44,7 +46,6 @@
         components: {ClipList, OffComments},
         data() {
             return {
-                // state: 0,
                 channel_info: {},
                 channel: parseInt(this.$route.params.channel),
                 clip_list: [],
@@ -55,7 +56,8 @@
             let channel_list = JSON.parse(localStorage.getItem('channel_list'));
             if (channel_list === null)
                 return;
-            this.channel_info = channel_list.find(x => x.bilibili_uid === this.channel)
+            let channel_info = channel_list.find(x => x.bilibili_uid === this.channel);
+            if (channel_info !== undefined) this.channel_info = channel_info;
         },
         methods: {
             list: function () {
@@ -99,10 +101,13 @@
                         }
                     }.bind(this))
             }
-            this.get_list(0);
+            this.get_list();
 
         },
         computed: {
+            space: function () {
+                return 'https://space.bilibili.com/' + this.channel
+            },
             chanel_name: function () {
                 if (this.channel_info) {
                     return this.channel_info.name;
@@ -129,5 +134,25 @@
     .mid {
         margin-top: auto;
         margin-bottom: auto;
+    }
+
+    a:link {
+        text-decoration: none;
+        color: #212529;
+    }
+
+    a:active {
+        text-decoration: blink;
+        color: #212529;
+    }
+
+    a:hover {
+        text-decoration: underline;
+        color: #212529;
+    }
+
+    a:visited {
+        text-decoration: none;
+        color: #212529;
     }
 </style>

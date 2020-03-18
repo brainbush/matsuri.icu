@@ -23,15 +23,17 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div v-if="detail_view" class="col-6 col-md">
+                        <div v-if="detail_view" class="col-12 col-sm-6 col-md">
                             <div class="row">
                                 <div class="tag_name">频道</div>
                             </div>
                             <div class="row">
-                                <div class="tag_value">{{channel_name}}</div>
+                                <a :href="space" target="_blank" rel="noopener noreferrer">
+                                    <div class="tag_value">{{channel_name}}</div>
+                                </a>
                             </div>
                         </div>
-                        <div class="col-6 col-md">
+                        <div class="col-12 col-sm-6 col-md">
                             <div class="row">
                                 <div class="tag_name">状态</div>
                             </div>
@@ -39,7 +41,7 @@
                                 <div class="tag_value">{{status}}</div>
                             </div>
                         </div>
-                        <div class="col-6 col-md">
+                        <div class="col-12 col-sm-6 col-md">
                             <div class="row">
                                 <div class="tag_name">开始</div>
                             </div>
@@ -47,7 +49,7 @@
                                 <div class="tag_value">{{start_time}}</div>
                             </div>
                         </div>
-                        <div class="col-6 col-md">
+                        <div class="col-12 col-sm-6 col-md">
                             <div class="row">
                                 <div class="tag_name">结束</div>
                             </div>
@@ -55,7 +57,7 @@
                                 <div class="tag_value">{{end_time}}</div>
                             </div>
                         </div>
-                        <div class="col-6 col-md">
+                        <div class="col-12 col-sm-6 col-md">
                             <div class="row">
                                 <div class="tag_name">弹幕</div>
                             </div>
@@ -83,6 +85,9 @@
             detail_view: Boolean
         },
         computed: {
+            space: function () {
+                return 'https://space.bilibili.com/' + this.clip.bilibili_uid
+            },
             channel_name: function () {
                 return this.clip.name
             },
