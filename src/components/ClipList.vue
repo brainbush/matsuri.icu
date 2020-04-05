@@ -35,14 +35,6 @@
                         </div>
                         <div class="col-12 col-sm-6 col-md">
                             <div class="row">
-                                <div class="tag_name">状态</div>
-                            </div>
-                            <div class="row">
-                                <div class="tag_value">{{status}}</div>
-                            </div>
-                        </div>
-                        <div class="col-12 col-sm-6 col-md">
-                            <div class="row">
                                 <div class="tag_name">开始</div>
                             </div>
                             <div class="row">
@@ -63,6 +55,40 @@
                             </div>
                             <div class="row">
                                 <div class="tag_value">{{total_danmu}}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row pt-1" v-if="this.detail_view">
+                        <div class="col-12 col-sm-6 col-md">
+                            <div class="row">
+                                <div class="tag_name">弹幕密度</div>
+                            </div>
+                            <div class="row">
+                                <div class="tag_value">{{danmu_density}}个/分钟</div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-6 col-md">
+                            <div class="row">
+                                <div class="tag_name">礼物收益</div>
+                            </div>
+                            <div class="row">
+                                <div class="tag_value">￥{{total_gift}}</div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-6 col-md">
+                            <div class="row">
+                                <div class="tag_name">SuperChat收益</div>
+                            </div>
+                            <div class="row">
+                                <div class="tag_value">￥{{total_superchat}}</div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-6 col-md">
+                            <div class="row">
+                                <div class="tag_name">合计收益</div>
+                            </div>
+                            <div class="row">
+                                <div class="tag_value">￥{{total_reward}}</div>
                             </div>
                         </div>
                     </div>
@@ -128,6 +154,26 @@
                 if (!this.clip.end_time)
                     return '不可用';
                 return this.clip.total_danmu
+            },
+            danmu_density: function () {
+                if (this.clip.hasOwnProperty('danmu_density'))
+                    return this.clip.danmu_density;
+                return 0;
+            },
+            total_gift: function () {
+                if (this.clip.hasOwnProperty('total_gift'))
+                    return this.clip.total_gift;
+                return 0;
+            },
+            total_superchat: function () {
+                if (this.clip.hasOwnProperty('total_superchat'))
+                    return this.clip.total_superchat;
+                return 0;
+            },
+            total_reward: function () {
+                if (this.clip.hasOwnProperty('total_reward'))
+                    return this.clip.total_reward;
+                return 0;
             }
         }
     }
