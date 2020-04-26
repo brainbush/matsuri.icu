@@ -5,7 +5,7 @@
             <label for="search_input"> </label>
             <input type="text" v-model="search_query" class="form-control col-12" id="search_input" placeholder="搜索">
         </div>
-        <CardList v-for="channel in query_result" :channel="channel" :key="channel.bilibili_uid"/>
+        <CardList v-for="channel in display_result" :channel="channel" :key="channel.bilibili_uid"/>
         <div class="empty"></div>
     </div>
 </template>
@@ -38,12 +38,20 @@
                 if (this.channel_list === null) {
                     return [];
                 }
-                if (this.search_query === null || this.search_query.length === 0)
-                    return this.channel_list.filter((channel, index) => index < this.showed);
+                if (this.search_query === null || this.search_query === '')
+                    return this.channel_list;
                 let query_lowercase = this.search_query.toLowerCase();
                 return this.channel_list.filter((item) => {
                     return item.name.toLowerCase().match(query_lowercase)
                 })
+            },
+            display_result: function () {
+                return this.query_result.filter((channel, index) => index < this.showed)
+            }
+        },
+        watch: {
+            search_query: function () {
+                this.showed = 30
             }
         },
         mounted() {
@@ -65,8 +73,8 @@
         },
         methods: {
             scrollFunc() {
-                if ((document.body.clientHeight - window.scrollY - window.innerHeight < (document.body.clientHeight / this.showed)) && (this.search_query === null)) {
-                    if (this.showed < this.channel_list.length)
+                if (document.body.clientHeight - window.scrollY - window.innerHeight < (document.body.clientHeight / this.showed)) {
+                    if (this.showed < this.query_result.length)
                         this.showed += 30;
                 }
             }
