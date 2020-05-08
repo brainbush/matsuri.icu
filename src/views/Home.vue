@@ -5,7 +5,8 @@
             <label for="search_input"> </label>
             <input type="text" v-model="search_query" class="form-control col-12" id="search_input" placeholder="搜索">
         </div>
-        <CardList v-for="channel in display_result" :channel="channel" :key="channel.bilibili_uid"/>
+        <CardList v-for="channel in display_result" :channel="channel" :webp_support="webp_support"
+                  :key="channel.bilibili_uid"/>
         <div class="empty"></div>
     </div>
 </template>
@@ -30,7 +31,8 @@
             return {
                 channel_list: JSON.parse(localStorage.getItem('channel_list')),
                 search_query: null,
-                showed: 30
+                showed: 30,
+                webp_support: this.$parent.webp_support
             }
         },
         computed: {

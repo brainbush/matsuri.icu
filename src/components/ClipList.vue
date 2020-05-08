@@ -108,7 +108,8 @@
         name: "ClipList",
         props: {
             clip: Object,
-            detail_view: Boolean
+            detail_view: Boolean,
+            webp_support: Boolean
         },
         computed: {
             space: function () {
@@ -138,7 +139,11 @@
             cover: function () {
                 if (this.clip.cover === '')
                     return '/no-cover.jpg';
-                return this.clip.cover + '@180h_320w'
+                if (this.webp_support) {
+                    return this.clip.cover + '@180h_320w.webp'
+                } else {
+                    return this.clip.cover + '@180h_320w'
+                }
             },
             start_time: function () {
                 if (this.clip.hasOwnProperty('start_time'))

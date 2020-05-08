@@ -59,11 +59,16 @@
     export default {
         name: "CardChannelList",
         props: {
-            channel: Object
+            channel: Object,
+            webp_support: Boolean
         },
         computed: {
             face: function () {
-                return this.channel.face + '@256h_256w'
+                if(this.webp_support) {
+                    return this.channel.face + '@256h_256w.webp'
+                }else{
+                    return this.channel.face + '@256h_256w'
+                }
             },
             live_url: function () {
                 if (this.channel.hasOwnProperty('bilibili_live_room'))

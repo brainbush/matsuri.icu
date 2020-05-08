@@ -1,6 +1,7 @@
 <template>
     <div>
-        <ClipList :clip="clip_info" v-if="Object.entries(clip_info).length" :detail_view="true"/>
+        <ClipList :clip="clip_info" v-if="Object.entries(clip_info).length" :webp_support="webp_support"
+                  :detail_view="true"/>
         <div class="row">
             <div class="col">
                 <ve-line :data="chartData"/>
@@ -51,7 +52,8 @@
                 showed: 500,
                 state: 0,
                 full_comments: [],
-                show_comments: false
+                show_comments: false,
+                webp_support: this.$parent.webp_support
             }
         },
         computed: {

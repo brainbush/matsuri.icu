@@ -1,7 +1,7 @@
 <template>
     <div>
         <div v-for="(clip,index) in data" :key="index">
-            <ClipList :clip="clip.clip_info" :detail_view="true"/>
+            <ClipList :clip="clip.clip_info" :detail_view="true" :webp_support="webp_support"/>
             <div class="container comment-container">
                 <LiveComment v-for="(comment,index) in clip.full_comments" :key="index" :comment="comment"
                              :viewer_view="true"/>
@@ -21,7 +21,8 @@
         data() {
             return {
                 id: this.$route.params.id,
-                data: {}
+                data: {},
+                webp_support: this.$parent.webp_support
             }
         },
         mounted() {

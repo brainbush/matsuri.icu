@@ -28,8 +28,15 @@
         components: {},
         data() {
             return {
-                loading: false
+                loading: false,
+                webp_support: false
             }
+        },
+        created: function () {
+            try {
+                this.webp_support = (document.createElement('canvas').toDataURL('image/webp').indexOf('data:image/webp') === 0);
+            } catch(e) {console.log('')}
+
         }
     }
 </script>

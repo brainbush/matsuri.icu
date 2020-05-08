@@ -29,7 +29,7 @@
             </div>
         </div>
         <div v-if="online_clips">
-            <ClipList v-for="clip in clip_list" :clip="clip" :detail_view="false" :key="clip.id"/>
+            <ClipList v-for="clip in clip_list" :clip="clip" :detail_view="false" :webp_support="webp_support" :key="clip.id"/>
         </div>
         <div v-else>
             <OffComments :uid="channel"/>
@@ -49,7 +49,8 @@
                 channel_info: {},
                 channel: parseInt(this.$route.params.channel),
                 clip_list: [],
-                online_clips: true
+                online_clips: true,
+                webp_support: this.$parent.webp_support
             }
         },
         created() {
@@ -116,9 +117,13 @@
             },
             face: function () {
                 if (this.channel_info)
-                    return this.channel_info.face + '@200h_200w';
+                    if(this.webp_support) {
+                        return this.channel_info.face + '@200h_200w.webp'
+                    }else{
+                        return this.channel_info.face + '@200h_200w'
+                    }
                 return null
-            },
+            }
         }
     }
 </script>
