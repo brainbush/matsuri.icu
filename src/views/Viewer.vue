@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div v-for="(clip,index) in data" :key="index">
+        <div v-for="clip in display_result" :key="clip.clip_info.id">
             <ClipList :clip="clip.clip_info" :detail_view="true" :webp_support="webp_support"/>
             <div class="container comment-container">
                 <LiveComment v-for="(comment,index) in clip.full_comments" :key="index" :comment="comment"
@@ -21,7 +21,8 @@
         data() {
             return {
                 id: this.$route.params.id,
-                data: {},
+                data: [],
+                showed: 20,
                 webp_support: this.$parent.webp_support
             }
         },
@@ -37,6 +38,19 @@
                     }
                 }.bind(this))
         },
+        computed: {
+            display_result: function () {
+                return this.data.filter((clip, index) => index < this.showed)
+            }
+        },
+        methods: {
+            scrollFunc() {
+                if (document.body.clientHeight - window.scrollY - window.innerHeight < (document.body.clientHeight / this.showed)) {
+                    if (this.showed < this.data.length)
+                        this.showed += 10;
+                }
+            }
+        }
     }
 </script>
 
