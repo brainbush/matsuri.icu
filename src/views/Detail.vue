@@ -16,6 +16,7 @@
                     <h3>全部弹幕</h3>
                 </div>
                 <div class="col text-right mid">
+                    <button type="button" v-on:click="download_danmu()" class="btn btn-info mr-2">导出全部弹幕</button>
                     <div class="btn-group mr-2">
                         <button type="button" v-on:click="list_status(0)" id="state0"
                                 class="btn btn-outline-primary active">全部
@@ -34,7 +35,8 @@
                     <div class="form-group">
                         <input type="checkbox" id="gift_filter_checkbox" v-model="filter_checkbox">
                         <label for="gift_filter_checkbox">隐藏小于
-                            <input type="number" style="max-width: 80px;display: inline" class="form-control pl-2 pr-2" step="0.1" v-model="filter_price">元的礼物
+                            <input type="number" style="max-width: 80px;display: inline" class="form-control pl-2 pr-2"
+                                   step="0.1" v-model="filter_price">元的礼物
                         </label>
                     </div>
                 </div>
@@ -173,7 +175,16 @@
                             this.$parent.loading = false;
                         }
                     }.bind(this))
-
+            },
+            download_danmu: function () {
+                let blob = new Blob([JSON.stringify(this.full_comments)], {type: 'application/json'});
+                let blob_url = window.URL.createObjectURL(blob);
+                let file_name = this.clip_info.name + '_' + this.clip_info.title + '_' + this.clip_info.start_time + '.json'
+                let blob_link = document.createElement('a');
+                blob_link.href = blob_url;
+                blob_link.download = file_name;
+                blob_link.click();
+                window.URL.revokeObjectURL(blob_url);
             }
         }
     }
