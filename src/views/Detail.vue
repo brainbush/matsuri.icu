@@ -29,6 +29,16 @@
                     </div>
                 </div>
             </div>
+            <div class="row pt-2" v-if="state===2">
+                <div class="col">
+                    <div class="form-group">
+                        <input type="checkbox" id="gift_filter_checkbox" v-model="filter_checkbox">
+                        <label for="gift_filter_checkbox">隐藏小于
+                            <input type="number" style="max-width: 80px;display: inline" class="form-control pl-2 pr-2" step="0.1" v-model="filter_price">元的礼物
+                        </label>
+                    </div>
+                </div>
+            </div>
             <LiveComment v-for="comment in comments_showed" :comment="comment" :key="comment.i" :viewer_view="false"/>
         </div>
         <div class="container text-center" v-else>
@@ -53,7 +63,9 @@
                 state: 0,
                 full_comments: [],
                 show_comments: false,
-                webp_support: this.$parent.webp_support
+                webp_support: this.$parent.webp_support,
+                filter_checkbox: false,
+                filter_price: 0.1
             }
         },
         computed: {
@@ -104,8 +116,15 @@
                                 (comment.text.startsWith('（') & comment.text.endsWith('）'));
                         return false;
                     })
-                } else
-                    return this.full_comments.filter(comment => comment.hasOwnProperty('gift_name') || comment.hasOwnProperty('superchat_price'));
+                } else {
+                    if (this.filter_checkbox) {
+                        let comments_with_price = this.full_comments.filter(comment => comment.hasOwnProperty('gift_name') || comment.hasOwnProperty('superchat_price'));
+                        return comments_with_price.filter(comment => comment.gift_price > this.filter_price || comment.superchat_price > this.filter_price)
+                    } else {
+                        return this.full_comments.filter(comment => comment.hasOwnProperty('gift_name') || comment.hasOwnProperty('superchat_price'));
+                    }
+
+                }
             },
             comments_showed: function () {
                 return this.comments_showed_full.filter((comment, index) => index < this.showed)
