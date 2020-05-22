@@ -29,7 +29,8 @@
             </div>
         </div>
         <div v-if="online_clips">
-            <ClipList v-for="clip in clip_list" :clip="clip" :detail_view="false" :webp_support="webp_support" :key="clip.id"/>
+            <ClipList v-for="clip in clip_list" :clip="clip" :detail_view="false" :viewer_view="false"
+                      :webp_support="webp_support" :key="clip.id"/>
         </div>
         <div v-else>
             <OffComments :uid="channel"/>
@@ -117,9 +118,9 @@
             },
             face: function () {
                 if (this.channel_info)
-                    if(this.webp_support) {
+                    if (this.webp_support) {
                         return this.channel_info.face + '@200h_200w.webp'
-                    }else{
+                    } else {
                         return this.channel_info.face + '@200h_200w'
                     }
                 return null

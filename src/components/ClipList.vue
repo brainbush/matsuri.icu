@@ -95,7 +95,7 @@
                 </div>
             </div>
         </div>
-        <div class="row">
+        <div class="row" v-if="!viewer_view">
             <div class="col-12">
                 <hr>
             </div>
@@ -109,7 +109,8 @@
         props: {
             clip: Object,
             detail_view: Boolean,
-            webp_support: Boolean
+            webp_support: Boolean,
+            viewer_view: Boolean
         },
         computed: {
             space: function () {

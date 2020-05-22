@@ -1,10 +1,13 @@
 <template>
     <div>
         <div v-for="clip in display_result" :key="clip.clip_info.id">
-            <ClipList :clip="clip.clip_info" :detail_view="true" :webp_support="webp_support"/>
+            <ClipList :clip="clip.clip_info" :detail_view="true" :viewer_view="true" :webp_support="webp_support"/>
             <div class="container comment-container">
                 <LiveComment v-for="(comment,index) in clip.full_comments" :key="index" :comment="comment"
                              :viewer_view="true"/>
+            </div>
+            <div class="col-12">
+                <hr>
             </div>
             <div class="pb-3"/>
         </div>

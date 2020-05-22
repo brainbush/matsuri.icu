@@ -1,7 +1,7 @@
 <template>
     <div>
         <ClipList :clip="clip_info" v-if="Object.entries(clip_info).length" :webp_support="webp_support"
-                  :detail_view="true"/>
+                  :detail_view="true" :viewer_view="false"/>
         <div class="row">
             <div class="col">
                 <ve-line :data="chartData"/>
