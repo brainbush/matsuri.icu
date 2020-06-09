@@ -83,21 +83,10 @@
             },
             clip_info: function () {
                 if (this.data.hasOwnProperty('start_time')) {
-                    return {
-                        bilibili_uid: this.data.bilibili_uid,
-                        name: this.data.name,
-                        cover: this.data.cover,
-                        start_time: this.data.start_time,
-                        end_time: this.data.end_time,
-                        live: this.data.live,
-                        title: this.data.title,
-                        id: this.data.id,
-                        total_danmu: this.data.total_danmu,
-                        danmu_density: this.data.danmu_density,
-                        total_gift: this.data.total_gift,
-                        total_superchat: this.data.total_superchat,
-                        total_reward: this.data.total_reward
-                    };
+                    document.title = this.data.title + ' - ' + this.data.name + ' - ICU for Viewers'
+                    let info = Object.assign({}, this.data)
+                    delete info.highlights
+                    return info;
                 } else return {}
             },
             highlights: function () {
@@ -133,6 +122,7 @@
             }
         },
         mounted() {
+            document.title = 'ICU for Viewers';
             this.$parent.loading = true;
             window.addEventListener('scroll', this.scrollFunc);
             this.$http
@@ -177,7 +167,10 @@
                     }.bind(this))
             },
             download_danmu: function () {
-                let blob = new Blob([JSON.stringify(this.full_comments)], {type: 'application/json'});
+                let blob = new Blob([JSON.stringify({
+                    info: this.clip_info,
+                    full_comments: this.full_comments
+                })], {type: 'application/json'});
                 let blob_url = window.URL.createObjectURL(blob);
                 let file_name = this.clip_info.name + '_' + this.clip_info.title + '_' + this.clip_info.start_time + '.json'
                 let blob_link = document.createElement('a');

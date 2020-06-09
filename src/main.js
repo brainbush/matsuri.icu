@@ -11,7 +11,7 @@ Vue.prototype.$moment = moment;
 Vue.config.productionTip = false;
 Vue.prototype.$http = axios;
 
-Vue.use(VueGtm, {id: 'GTM-52TBTCD'});
+Vue.use(VueGtm, {id: 'GTM-52TBTCD', vueRouter: router});
 
 new Vue({
     router,

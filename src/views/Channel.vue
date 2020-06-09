@@ -29,7 +29,7 @@
             </div>
         </div>
         <div v-if="online_clips">
-            <ClipList v-for="clip in clip_list" :clip="clip" :detail_view="false" :viewer_view="false"
+            <ClipList v-for="clip in display_clips" :clip="clip" :detail_view="false" :viewer_view="false"
                       :webp_support="webp_support" :key="clip.id"/>
         </div>
         <div v-else>
@@ -51,7 +51,8 @@
                 channel: parseInt(this.$route.params.channel),
                 clip_list: [],
                 online_clips: true,
-                webp_support: this.$parent.webp_support
+                webp_support: this.$parent.webp_support,
+                showed: 20
             }
         },
         created() {
@@ -81,7 +82,6 @@
                 let url;
                 this.$parent.loading = true;
                 url = 'https://api.neeemooo.com/channel/' + this.channel.toString() + '/clips';
-
                 this.$http
                     .get(url)
                     .then(function (response) {
@@ -90,9 +90,16 @@
                             this.$parent.loading = false;
                         }
                     }.bind(this))
+            },
+            scrollFunc() {
+                if (document.body.clientHeight - window.scrollY - window.innerHeight < (document.body.clientHeight / this.showed)) {
+                    if (this.showed < this.clip_list.length)
+                        this.showed += 10;
+                }
             }
         },
         mounted() {
+            window.addEventListener('scroll', this.scrollFunc);
             if (Object.entries(this.channel_info).length === 0) {
                 console.log('Fetch channel info');
                 this.$http
@@ -112,6 +119,7 @@
             },
             chanel_name: function () {
                 if (this.channel_info) {
+                    document.title = this.channel_info.name + ' - ICU for Viewers'
                     return this.channel_info.name;
                 }
                 return null
@@ -124,6 +132,9 @@
                         return this.channel_info.face + '@200h_200w'
                     }
                 return null
+            },
+            display_clips: function () {
+                return this.clip_list.filter((clip, index) => index < this.showed)
             }
         }
     }

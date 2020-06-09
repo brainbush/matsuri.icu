@@ -57,6 +57,7 @@
             }
         },
         mounted() {
+            document.title = 'ICU for Viewers';
             window.addEventListener('scroll', this.scrollFunc);
             if (this.channel_list === null)
                 this.$parent.loading = true;

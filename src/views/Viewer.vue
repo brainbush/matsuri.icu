@@ -30,6 +30,7 @@
             }
         },
         mounted() {
+            document.title = 'ICU for Viewers'
             this.$parent.loading = true;
             window.addEventListener('scroll', this.scrollFunc);
             this.$http
@@ -37,6 +38,7 @@
                 .then(function (response) {
                     if (response.data.status === 0) {
                         this.data = response.data.data;
+                        if (this.data.length > 0) document.title = this.data[0].full_comments[0].username + ' - ICU for Viewers';
                         this.$parent.loading = false;
                     }
                 }.bind(this))
