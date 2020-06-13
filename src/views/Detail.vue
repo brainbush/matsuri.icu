@@ -16,7 +16,17 @@
                     <h3>全部弹幕</h3>
                 </div>
                 <div class="col text-right mid">
-                    <button type="button" v-on:click="download_danmu()" class="btn btn-info mr-2">导出全部弹幕</button>
+                    <div class="btn-group">
+                        <button type="button" id="export_dropdown" class="btn btn-info mr-2 dropdown-toggle"
+                                data-toggle="dropdown" aria-haspopup="true" @click="export_dropdown=!export_dropdown"
+                                aria-expanded="false">导出全部弹幕
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="export_dropdown"
+                             v-bind:class="{show:export_dropdown}">
+                            <a class="dropdown-item" @click="download_danmu_json()" style="user-select:none">JSON</a>
+                            <a class="dropdown-item" @click="download_danmu_xml()" style="user-select:none">XML</a>
+                        </div>
+                    </div>
                     <div class="btn-group mr-2">
                         <button type="button" v-on:click="list_status(0)" id="state0"
                                 class="btn btn-outline-primary active">全部
@@ -57,6 +67,7 @@
     export default {
         name: "Detail",
         components: {ClipList, LiveComment, VeLine},
+
         data() {
             return {
                 id: this.$route.params.id,
@@ -67,7 +78,8 @@
                 show_comments: false,
                 webp_support: this.$parent.webp_support,
                 filter_checkbox: false,
-                filter_price: 0.1
+                filter_price: 0.1,
+                export_dropdown: false
             }
         },
         computed: {
@@ -166,13 +178,37 @@
                         }
                     }.bind(this))
             },
-            download_danmu: function () {
+            download_danmu_json: function () {
                 let blob = new Blob([JSON.stringify({
                     info: this.clip_info,
                     full_comments: this.full_comments
                 })], {type: 'application/json'});
                 let blob_url = window.URL.createObjectURL(blob);
                 let file_name = this.clip_info.name + '_' + this.clip_info.title + '_' + this.clip_info.start_time + '.json'
+                let blob_link = document.createElement('a');
+                blob_link.href = blob_url;
+                blob_link.download = file_name;
+                blob_link.click();
+                window.URL.revokeObjectURL(blob_url);
+            },
+            download_danmu_xml: function () {
+                let doc = document.implementation.createDocument("", "", null);
+                let i_element = doc.createElement('i');
+                this.full_comments.forEach(comment => {
+                    if (comment.hasOwnProperty('text')) {
+                        let d_element = doc.createElement('d')
+                        let time_d = (comment.time - this.clip_info.start_time) / 1000;
+                        d_element.setAttribute('p', `${time_d},1,25,16777215,${Math.floor(comment.time / 1000)},0,${comment.user_id},${comment.i}`)
+                        d_element.textContent = comment.text
+                        i_element.appendChild(d_element)
+                    }
+                })
+                doc.appendChild(i_element)
+                let oSerializer = new XMLSerializer();
+                let sXML = '<?xml version="1.0" encoding="UTF-8"?>' + oSerializer.serializeToString(doc);
+                let blob = new Blob([sXML], {type: 'text/xml'});
+                let blob_url = window.URL.createObjectURL(blob);
+                let file_name = this.clip_info.name + '_' + this.clip_info.title + '_' + this.clip_info.start_time + '.xml'
                 let blob_link = document.createElement('a');
                 blob_link.href = blob_url;
                 blob_link.download = file_name;
