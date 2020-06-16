@@ -79,7 +79,8 @@
                 webp_support: this.$parent.webp_support,
                 filter_checkbox: false,
                 filter_price: 0.1,
-                export_dropdown: false
+                export_dropdown: false,
+                crc_table: null
             }
         },
         computed: {
@@ -198,7 +199,7 @@
                     if (comment.hasOwnProperty('text')) {
                         let d_element = doc.createElement('d')
                         let time_d = (comment.time - this.clip_info.start_time) / 1000;
-                        d_element.setAttribute('p', `${time_d},1,25,16777215,${Math.floor(comment.time / 1000)},0,${comment.user_id},${comment.i}`)
+                        d_element.setAttribute('p', `${time_d},1,25,16777215,${Math.floor(comment.time / 1000)},0,${this.get_crc32(comment.user_id.toString()).toString(16)},${comment.i}`)
                         d_element.textContent = comment.text
                         i_element.appendChild(d_element)
                     }
@@ -214,6 +215,26 @@
                 blob_link.download = file_name;
                 blob_link.click();
                 window.URL.revokeObjectURL(blob_url);
+            },
+            generate_crc_table: function () {
+                let c;
+                let crcTable = [];
+                for (let n = 0; n < 256; n++) {
+                    c = n;
+                    for (let k = 0; k < 8; k++) {
+                        c = ((c & 1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1));
+                    }
+                    crcTable[n] = c;
+                }
+                return crcTable;
+            },
+            get_crc32: function (uid) {
+                let crcTable = this.crcTable || (this.crcTable = this.generate_crc_table());
+                let crc = 0 ^ (-1);
+                for (let i = 0; i < uid.length; i++) {
+                    crc = (crc >>> 8) ^ crcTable[(crc ^ uid.charCodeAt(i)) & 0xFF];
+                }
+                return (crc ^ (-1)) >>> 0;
             }
         }
     }
