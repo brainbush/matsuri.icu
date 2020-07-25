@@ -35,8 +35,16 @@
         created: function () {
             try {
                 this.webp_support = (document.createElement('canvas').toDataURL('image/webp').indexOf('data:image/webp') === 0);
-            } catch(e) {console.log('')}
-
+            } catch (e) {
+                console.log('')
+            }
+        },
+        watch: {
+            loading: function (val) {
+                if (val === false) {
+                    window.dataLayer.push({event: 'custom.historyChange'})
+                }
+            }
         }
     }
 </script>

@@ -62,7 +62,7 @@
 <script>
     import ClipList from "@/components/ClipList";
     import LiveComment from "@/components/LiveComment";
-    import VeLine from 'v-charts/lib/line.min'
+    import VeLine from 'v-charts/lib/line.common.min'
 
     export default {
         name: "Detail",

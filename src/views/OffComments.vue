@@ -23,7 +23,6 @@
 <script>
     import LiveComment from "@/components/LiveComment";
     import DatePicker from "vue2-datepicker"
-    import 'vue2-datepicker/index.css';
     import 'vue2-datepicker/locale/zh-cn';
 
     function time_compare(a, b) {
@@ -106,11 +105,13 @@
     }
 </script>
 
+<style lang="scss">
+    @import "~vue2-datepicker/scss/index.scss";
+</style>
 <style scoped>
     @media (max-width: 540px) {
         .mx-datepicker {
             width: 150px
         }
     }
-
 </style>

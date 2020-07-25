@@ -1,5 +1,6 @@
 const webpack = require('webpack');
 module.exports = {
+    productionSourceMap: process.env.NODE_ENV !== 'production',
     css: {
         loaderOptions: {
             sass: {

@@ -10,7 +10,6 @@
   "dependencies": {
     "axios": "^0.19.2",
     "bootstrap": "^4.4.1",
-    "core-js": "^3.4.4",
     "echarts": "^4.6.0",
     "moment": "^2.24.0",
     "v-charts": "^1.19.0",
@@ -27,10 +26,9 @@
     "babel-eslint": "^10.0.3",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
-    "node-sass": "^4.13.1",
+    "node-sass": "^4.14.1",
     "sass-loader": "^8.0.2",
-    "vue-template-compiler": "^2.6.10"
-  },
+    "vue-template-compiler": "^2.6.11"},
   "eslintConfig": {
     "root": true,
     "env": {
