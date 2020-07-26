@@ -16,7 +16,7 @@
                     <h3>全部弹幕</h3>
                 </div>
                 <div class="col text-right mid">
-                    <div class="btn-group">
+                    <div class="btn-group" v-click_outside="outside_close">
                         <button type="button" id="export_dropdown" class="btn btn-info mr-2 dropdown-toggle"
                                 data-toggle="dropdown" aria-haspopup="true" @click="export_dropdown=!export_dropdown"
                                 aria-expanded="false">导出全部弹幕
@@ -81,6 +81,21 @@
                 filter_price: 0.1,
                 export_dropdown: false,
                 crc_table: null
+            }
+        },
+        directives: {
+            click_outside: {
+                bind: function (element, binding, vNode) {
+                    element.clickOutsideEvent = function (event) {
+                        if (!(element === event.target || element.contains(event.target))) {
+                            vNode.context[binding.expression](event);
+                        }
+                    }
+                    document.body.addEventListener('click', element.clickOutsideEvent)
+                },
+                unbind: function (element) {
+                    document.body.removeEventListener('click', element.clickOutsideEvent)
+                }
             }
         },
         computed: {
@@ -235,6 +250,9 @@
                     crc = (crc >>> 8) ^ crcTable[(crc ^ uid.charCodeAt(i)) & 0xFF];
                 }
                 return (crc ^ (-1)) >>> 0;
+            },
+            outside_close: function () {
+                if (this.export_dropdown) this.export_dropdown = false;
             }
         }
     }
