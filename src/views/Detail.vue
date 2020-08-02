@@ -11,33 +11,29 @@
             <hr>
         </div>
         <div class="container comment-container" v-if="show_comments">
-            <div class="row">
-                <div class="col text-left">
-                    <h3>全部弹幕</h3>
+            <div class="d-flex flex-wrap">
+                <h3 class="mr-auto">全部弹幕</h3>
+                <div class="btn-group mid" v-click_outside="outside_close">
+                    <button type="button" id="export_dropdown" class="btn btn-info mr-2 dropdown-toggle"
+                            data-toggle="dropdown" aria-haspopup="true" @click="export_dropdown=!export_dropdown"
+                            aria-expanded="false">导出全部弹幕
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="export_dropdown"
+                         v-bind:class="{show:export_dropdown}">
+                        <a class="dropdown-item" @click="download_danmu_json()" style="user-select:none">JSON</a>
+                        <a class="dropdown-item" @click="download_danmu_xml()" style="user-select:none">XML</a>
+                    </div>
                 </div>
-                <div class="col text-right mid">
-                    <div class="btn-group" v-click_outside="outside_close">
-                        <button type="button" id="export_dropdown" class="btn btn-info mr-2 dropdown-toggle"
-                                data-toggle="dropdown" aria-haspopup="true" @click="export_dropdown=!export_dropdown"
-                                aria-expanded="false">导出全部弹幕
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="export_dropdown"
-                             v-bind:class="{show:export_dropdown}">
-                            <a class="dropdown-item" @click="download_danmu_json()" style="user-select:none">JSON</a>
-                            <a class="dropdown-item" @click="download_danmu_xml()" style="user-select:none">XML</a>
-                        </div>
-                    </div>
-                    <div class="btn-group mr-2">
-                        <button type="button" v-on:click="list_status(0)" id="state0"
-                                class="btn btn-outline-primary active">全部
-                        </button>
-                        <button type="button" v-on:click="list_status(1)" id="state1" class="btn btn-outline-primary">
-                            翻译man
-                        </button>
-                        <button type="button" v-on:click="list_status(2)" id="state2" class="btn btn-outline-primary">
-                            礼物
-                        </button>
-                    </div>
+                <div class="btn-group mid mr-2">
+                    <button type="button" v-on:click="list_status(0)" id="state0"
+                            class="btn btn-outline-primary active">全部
+                    </button>
+                    <button type="button" v-on:click="list_status(1)" id="state1" class="btn btn-outline-primary">
+                        翻译man
+                    </button>
+                    <button type="button" v-on:click="list_status(2)" id="state2" class="btn btn-outline-primary">
+                        礼物
+                    </button>
                 </div>
             </div>
             <div class="row pt-2" v-if="state===2">
@@ -111,7 +107,6 @@
             },
             clip_info: function () {
                 if (this.data.hasOwnProperty('start_time')) {
-                    document.title = this.data.title + ' - ' + this.data.name + ' - ICU for Viewers'
                     let info = Object.assign({}, this.data)
                     delete info.highlights
                     return info;
@@ -158,6 +153,7 @@
                 .then(function (response) {
                     if (response.data.status === 0) {
                         this.data = response.data.data;
+                        document.title = this.data.title + ' - ' + this.data.name + ' - ICU for Viewers'
                         this.$parent.loading = false;
                     }
                 }.bind(this))

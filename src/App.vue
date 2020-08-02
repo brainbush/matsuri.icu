@@ -50,5 +50,16 @@
 </script>
 
 <style lang="scss">
-    @import "node_modules/bootstrap/scss/bootstrap";
+    @import "~bootstrap/scss/bootstrap-reboot";
+    @import "~bootstrap/scss/bootstrap-grid";
+    @import "~bootstrap/scss/utilities";
+    @import "~bootstrap/scss/code";
+    @import "~bootstrap/scss/button-group";
+    @import "~bootstrap/scss/buttons";
+    @import "~bootstrap/scss/navbar";
+    @import "~bootstrap/scss/type";
+    @import "~bootstrap/scss/forms";
+    @import "~bootstrap/scss/badge";
+    @import "~bootstrap/scss/dropdown";
+    @import "~bootstrap/scss/spinners";
 </style>

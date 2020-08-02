@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="container container-row">
-            <div class="row">
+            <div class="d-flex flex-wrap">
                 <div v-if="!this.clip.end_time || this.detail_view">
                     <img class="image_container_clip_list" alt="" :src="cover">
                 </div>
@@ -10,7 +10,7 @@
                         <img class="image_container_clip_list" alt="" :src="cover">
                     </router-link>
                 </div>
-
+                <div class="w-100 d-sm-none"/>
                 <div class="col ml-4">
                     <div class="row">
                         <div v-if="!this.clip.end_time || this.detail_view">
@@ -55,6 +55,14 @@
                             </div>
                             <div class="row">
                                 <div class="tag_value">{{total_danmu}}</div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-6 col-md">
+                            <div class="row">
+                                <div class="tag_name">观看人数</div>
+                            </div>
+                            <div class="row">
+                                <div class="tag_value">{{total_views}}</div>
                             </div>
                         </div>
                     </div>
@@ -160,6 +168,13 @@
                 if (!this.clip.end_time)
                     return '不可用';
                 return this.clip.total_danmu
+            },
+            total_views:function(){
+                if(!this.clip.end_time)
+                    return '不可用'
+                if(this.clip.hasOwnProperty('views'))
+                    return this.clip.views
+                else return '不可用'
             },
             danmu_density: function () {
                 if (this.clip.hasOwnProperty('danmu_density'))
