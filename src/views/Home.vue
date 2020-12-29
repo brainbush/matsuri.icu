@@ -29,9 +29,11 @@ export default {
     components: {CardList},
     data() {
         return {
-            channel_list: JSON.parse(localStorage.getItem('channel_list')),
+            channel_data: JSON.parse(localStorage.getItem('channel_list')).sort(true_compare),
+            channel_list: [],
             search_query: null,
             showed: 30,
+            show_hidden: this.$route.query.hasOwnProperty('hey'),
             webp_support: this.$parent.webp_support,
             head_list: ['别骂了，对不起，ごめんなさい~', '鸟鸟鸟鸟鸟鸟鸟鸟鸟鸟', '憨憨憨憨憨憨憨憨憨憨', '本社爆破~！', '内鬼全鲨了！']
         }
@@ -58,6 +60,10 @@ export default {
     watch: {
         search_query: function () {
             this.showed = 30
+        },
+        channel_data: function (val) {
+            if (this.show_hidden) this.channel_list = val.slice().sort(true_compare);
+            else this.channel_list = val.filter(channel => channel.hidden === false).slice().sort(true_compare);
         }
     },
     mounted() {
@@ -69,7 +75,7 @@ export default {
         .get('https://api.neeemooo.com/channel')
         .then(function (response) {
             if (response.data.status === 0) {
-                this.channel_list = response.data.data.sort(true_compare);
+                this.channel_data = response.data.data;
                 localStorage.setItem('channel_list', JSON.stringify(response.data.data));
                 this.$parent.loading = false;
             }

@@ -20,8 +20,11 @@
                     </button>
                     <div class="dropdown-menu" aria-labelledby="export_dropdown"
                          v-bind:class="{show:export_dropdown}">
-                        <a class="dropdown-item" @click="download_danmu_json()" style="user-select:none">JSON</a>
-                        <a class="dropdown-item" @click="download_danmu_xml()" style="user-select:none">XML</a>
+                        <a class="dropdown-item" @click="download_danmu_json(0)" style="user-select:none">JSON</a>
+                        <a class="dropdown-item" @click="download_danmu_xml(0)" style="user-select:none">XML</a>
+                        <a class="dropdown-item" @click="download_danmu_json(1)"
+                           style="user-select:none">JSON（翻译man）</a>
+                        <a class="dropdown-item" @click="download_danmu_xml(1)" style="user-select:none">XML（翻译man）</a>
                     </div>
                 </div>
                 <div class="btn-group mid mr-2">
@@ -56,211 +59,219 @@
 </template>
 
 <script>
-    import ClipList from "@/components/ClipList";
-    import LiveComment from "@/components/LiveComment";
-    import VeLine from 'v-charts/lib/line.common.min'
+import ClipList from "@/components/ClipList";
+import LiveComment from "@/components/LiveComment";
+import VeLine from 'v-charts/lib/line.common.min'
 
-    export default {
-        name: "Detail",
-        components: {ClipList, LiveComment, VeLine},
+export default {
+    name: "Detail",
+    components: {ClipList, LiveComment, VeLine},
 
-        data() {
-            return {
-                id: this.$route.params.id,
-                data: {},
-                showed: 500,
-                state: 0,
-                full_comments: [],
-                show_comments: false,
-                webp_support: this.$parent.webp_support,
-                filter_checkbox: false,
-                filter_price: 0.1,
-                export_dropdown: false,
-                crc_table: null
-            }
-        },
-        directives: {
-            click_outside: {
-                bind: function (element, binding, vNode) {
-                    element.clickOutsideEvent = function (event) {
-                        if (!(element === event.target || element.contains(event.target))) {
-                            vNode.context[binding.expression](event);
-                        }
+    data() {
+        return {
+            id: this.$route.params.id,
+            data: {},
+            showed: 500,
+            state: 0,
+            full_comments: [],
+            show_comments: false,
+            webp_support: this.$parent.webp_support,
+            filter_checkbox: false,
+            filter_price: 0.1,
+            export_dropdown: false,
+            crc_table: null
+        }
+    },
+    directives: {
+        click_outside: {
+            bind: function (element, binding, vNode) {
+                element.clickOutsideEvent = function (event) {
+                    if (!(element === event.target || element.contains(event.target))) {
+                        vNode.context[binding.expression](event);
                     }
-                    document.body.addEventListener('click', element.clickOutsideEvent)
-                },
-                unbind: function (element) {
-                    document.body.removeEventListener('click', element.clickOutsideEvent)
                 }
-            }
-        },
-        computed: {
-            chartData: function () {
-                let rows = [];
-                let columns = [];
-                if (this.highlights.length) {
-                    rows = this.highlights;
-                    columns = Object.keys(rows[0]);
-                    rows.forEach(row => row.time = this.$moment(row.time).format('H:mm'));
-                }
-                return {columns: columns, rows: rows};
+                document.body.addEventListener('click', element.clickOutsideEvent)
             },
-            clip_info: function () {
-                if (this.data.hasOwnProperty('start_time')) {
-                    let info = Object.assign({}, this.data)
-                    delete info.highlights
-                    return info;
-                } else return {}
-            },
-            highlights: function () {
-                if (this.data.hasOwnProperty('highlights')) {
-                    return this.data.highlights
-                } else return [];
-            },
-            comments_showed_full: function () {
-                if (this.state === 0) {
-                    return this.full_comments;
-                } else if (this.state === 1) {
-                    // 可它实在是太慢了!
-                    // let re = RegExp('(^【)+(.*)+(】+$)');
-                    // return this.full_comments.filter(comment => re.test(comment.text))
-                    return this.full_comments.filter(comment => {
-                        if (comment.hasOwnProperty('text'))
-                            return (comment.text.startsWith('【') & comment.text.endsWith('】')) |
-                                (comment.text.startsWith('（') & comment.text.endsWith('）'));
-                        return false;
-                    })
-                } else {
-                    if (this.filter_checkbox) {
-                        let comments_with_price = this.full_comments.filter(comment => comment.hasOwnProperty('gift_name') || comment.hasOwnProperty('superchat_price'));
-                        return comments_with_price.filter(comment => comment.gift_price > this.filter_price || comment.superchat_price > this.filter_price)
-                    } else {
-                        return this.full_comments.filter(comment => comment.hasOwnProperty('gift_name') || comment.hasOwnProperty('superchat_price'));
-                    }
-
-                }
-            },
-            comments_showed: function () {
-                return this.comments_showed_full.filter((comment, index) => index < this.showed)
-            }
-        },
-        mounted() {
-            document.title = 'ICU for Viewers';
-            this.$parent.loading = true;
-            window.addEventListener('scroll', this.scrollFunc);
-            this.$http
-                .get('https://api.neeemooo.com/clip/' + this.id)
-                .then(function (response) {
-                    if (response.data.status === 0) {
-                        this.data = response.data.data;
-                        document.title = this.data.title + ' - ' + this.data.name + ' - ICU for Viewers'
-                        this.$parent.loading = false;
-                    }
-                }.bind(this))
-        },
-        methods: {
-            scrollFunc() {
-                if (document.body.clientHeight - window.scrollY - window.innerHeight < (document.body.clientHeight / this.showed)) {
-                    if (this.showed < this.comments_showed_full.length)
-                        this.showed += 500;
-                }
-            },
-            list_status: function (state) {
-                if (state === this.state)
-                    return;
-                document.getElementById('state' + this.state.toString()).classList.remove('active');
-                document.getElementById('state' + state.toString()).classList.add('active');
-                this.state = state;
-                this.showed = 500;
-            },
-            get_comments: function () {
-                this.show_comments = true;
-                this.$parent.loading = true;
-                this.$http
-                    .get('https://api.neeemooo.com/clip/' + this.id + '/comments')
-                    .then(function (response) {
-                        if (response.data.status === 0) {
-                            let full_comments = [];
-                            response.data.data.forEach(function (comment, i) {
-                                comment.i = i;
-                                full_comments.push(comment)
-                            });
-                            this.full_comments = full_comments;
-                            this.$parent.loading = false;
-                        }
-                    }.bind(this))
-            },
-            download_danmu_json: function () {
-                let blob = new Blob([JSON.stringify({
-                    info: this.clip_info,
-                    full_comments: this.full_comments
-                })], {type: 'application/json'});
-                let blob_url = window.URL.createObjectURL(blob);
-                let file_name = this.clip_info.name + '_' + this.clip_info.title + '_' + this.clip_info.start_time + '.json'
-                let blob_link = document.createElement('a');
-                blob_link.href = blob_url;
-                blob_link.download = file_name;
-                blob_link.click();
-                window.URL.revokeObjectURL(blob_url);
-            },
-            download_danmu_xml: function () {
-                let doc = document.implementation.createDocument("", "", null);
-                let i_element = doc.createElement('i');
-                this.full_comments.forEach(comment => {
-                    if (comment.hasOwnProperty('text')) {
-                        let d_element = doc.createElement('d')
-                        let time_d = (comment.time - this.clip_info.start_time) / 1000;
-                        d_element.setAttribute('p', `${time_d},1,25,16777215,${Math.floor(comment.time / 1000)},0,${this.get_crc32(comment.user_id.toString()).toString(16)},${comment.i}`)
-                        d_element.textContent = comment.text
-                        i_element.appendChild(d_element)
-                    }
-                })
-                doc.appendChild(i_element)
-                let oSerializer = new XMLSerializer();
-                let sXML = '<?xml version="1.0" encoding="UTF-8"?>' + oSerializer.serializeToString(doc);
-                let blob = new Blob([sXML], {type: 'text/xml'});
-                let blob_url = window.URL.createObjectURL(blob);
-                let file_name = this.clip_info.name + '_' + this.clip_info.title + '_' + this.clip_info.start_time + '.xml'
-                let blob_link = document.createElement('a');
-                blob_link.href = blob_url;
-                blob_link.download = file_name;
-                blob_link.click();
-                window.URL.revokeObjectURL(blob_url);
-            },
-            generate_crc_table: function () {
-                let c;
-                let crcTable = [];
-                for (let n = 0; n < 256; n++) {
-                    c = n;
-                    for (let k = 0; k < 8; k++) {
-                        c = ((c & 1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1));
-                    }
-                    crcTable[n] = c;
-                }
-                return crcTable;
-            },
-            get_crc32: function (uid) {
-                let crcTable = this.crcTable || (this.crcTable = this.generate_crc_table());
-                let crc = 0 ^ (-1);
-                for (let i = 0; i < uid.length; i++) {
-                    crc = (crc >>> 8) ^ crcTable[(crc ^ uid.charCodeAt(i)) & 0xFF];
-                }
-                return (crc ^ (-1)) >>> 0;
-            },
-            outside_close: function () {
-                if (this.export_dropdown) this.export_dropdown = false;
+            unbind: function (element) {
+                document.body.removeEventListener('click', element.clickOutsideEvent)
             }
         }
+    },
+    computed: {
+        chartData: function () {
+            let rows = [];
+            let columns = [];
+            if (this.highlights.length) {
+                rows = this.highlights;
+                columns = Object.keys(rows[0]);
+                rows.forEach(row => row.time = this.$moment(row.time).format('H:mm'));
+            }
+            return {columns: columns, rows: rows};
+        },
+        clip_info: function () {
+            if (this.data.hasOwnProperty('start_time')) {
+                let info = Object.assign({}, this.data)
+                delete info.highlights
+                return info;
+            } else return {}
+        },
+        highlights: function () {
+            if (this.data.hasOwnProperty('highlights')) {
+                return this.data.highlights
+            } else return [];
+        },
+        comments_showed_full: function () {
+            if (this.state === 0) {
+                return this.full_comments;
+            } else if (this.state === 1) {
+                // 可它实在是太慢了!
+                // let re = RegExp('(^【)+(.*)+(】+$)');
+                // return this.full_comments.filter(comment => re.test(comment.text))
+                return this.full_comments.filter(this.translate_filter)
+            } else {
+                if (this.filter_checkbox) {
+                    let comments_with_price = this.full_comments.filter(comment => comment.hasOwnProperty('gift_name') || comment.hasOwnProperty('superchat_price'));
+                    return comments_with_price.filter(comment => comment.gift_price > this.filter_price || comment.superchat_price > this.filter_price)
+                } else {
+                    return this.full_comments.filter(comment => comment.hasOwnProperty('gift_name') || comment.hasOwnProperty('superchat_price'));
+                }
+
+            }
+        },
+        comments_showed: function () {
+            return this.comments_showed_full.filter((comment, index) => index < this.showed)
+        }
+    },
+    mounted() {
+        document.title = 'ICU for Viewers';
+        this.$parent.loading = true;
+        window.addEventListener('scroll', this.scrollFunc);
+        this.$http
+        .get('https://api.neeemooo.com/clip/' + this.id)
+        .then(function (response) {
+            if (response.data.status === 0) {
+                this.data = response.data.data;
+                document.title = this.data.title + ' - ' + this.data.name + ' - ICU for Viewers'
+                this.$parent.loading = false;
+            }
+        }.bind(this))
+    },
+    methods: {
+        scrollFunc() {
+            if (document.body.clientHeight - window.scrollY - window.innerHeight < (document.body.clientHeight / this.showed)) {
+                if (this.showed < this.comments_showed_full.length)
+                    this.showed += 500;
+            }
+        },
+        list_status: function (state) {
+            if (state === this.state)
+                return;
+            document.getElementById('state' + this.state.toString()).classList.remove('active');
+            document.getElementById('state' + state.toString()).classList.add('active');
+            this.state = state;
+            this.showed = 500;
+        },
+        get_comments: function () {
+            this.show_comments = true;
+            this.$parent.loading = true;
+            this.$http
+            .get('https://api.neeemooo.com/clip/' + this.id + '/comments')
+            .then(function (response) {
+                if (response.data.status === 0) {
+                    let full_comments = [];
+                    response.data.data.forEach(function (comment, i) {
+                        comment.i = i;
+                        full_comments.push(comment)
+                    });
+                    this.full_comments = full_comments;
+                    this.$parent.loading = false;
+                }
+            }.bind(this))
+        },
+        download_danmu_json: function (status) {
+            let full_comments
+            if (status) full_comments = this.full_comments.filter(this.translate_filter)
+            else full_comments = this.full_comments;
+            let blob = new Blob([JSON.stringify({
+                info: this.clip_info,
+                full_comments: full_comments
+            })], {type: 'application/json'});
+            let blob_url = window.URL.createObjectURL(blob);
+            let file_name = this.clip_info.name + '_' + this.clip_info.title + '_' + this.clip_info.start_time + '.json'
+            let blob_link = document.createElement('a');
+            blob_link.href = blob_url;
+            blob_link.download = file_name;
+            blob_link.click();
+            window.URL.revokeObjectURL(blob_url);
+        },
+        download_danmu_xml: function (status) {
+            let full_comments
+            if (status) full_comments = this.full_comments.filter(this.translate_filter)
+            else full_comments = this.full_comments;
+
+            let doc = document.implementation.createDocument("", "", null);
+            let i_element = doc.createElement('i');
+            full_comments.forEach(comment => {
+                if (comment.hasOwnProperty('text')) {
+                    let d_element = doc.createElement('d')
+                    let time_d = (comment.time - this.clip_info.start_time) / 1000;
+                    d_element.setAttribute('p', `${time_d},1,25,16777215,${Math.floor(comment.time / 1000)},0,${this.get_crc32(comment.user_id.toString()).toString(16)},${comment.i}`)
+                    d_element.textContent = comment.text
+                    i_element.appendChild(d_element)
+                }
+            })
+            doc.appendChild(i_element)
+            let oSerializer = new XMLSerializer();
+            let sXML = '<?xml version="1.0" encoding="UTF-8"?>' + oSerializer.serializeToString(doc);
+            let blob = new Blob([sXML], {type: 'text/xml'});
+            let blob_url = window.URL.createObjectURL(blob);
+            let file_name = this.clip_info.name + '_' + this.clip_info.title + '_' + this.clip_info.start_time + '.xml'
+            let blob_link = document.createElement('a');
+            blob_link.href = blob_url;
+            blob_link.download = file_name;
+            blob_link.click();
+            window.URL.revokeObjectURL(blob_url);
+        },
+        generate_crc_table: function () {
+            let c;
+            let crcTable = [];
+            for (let n = 0; n < 256; n++) {
+                c = n;
+                for (let k = 0; k < 8; k++) {
+                    c = ((c & 1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1));
+                }
+                crcTable[n] = c;
+            }
+            return crcTable;
+        },
+        get_crc32: function (uid) {
+            let crcTable = this.crcTable || (this.crcTable = this.generate_crc_table());
+            let crc = 0 ^ (-1);
+            for (let i = 0; i < uid.length; i++) {
+                crc = (crc >>> 8) ^ crcTable[(crc ^ uid.charCodeAt(i)) & 0xFF];
+            }
+            return (crc ^ (-1)) >>> 0;
+        },
+        outside_close: function () {
+            if (this.export_dropdown) this.export_dropdown = false;
+        },
+        translate_filter: comment => {
+            let emoji_list = ["(⌒▽⌒)", "（￣▽￣）", "(=・ω・=)", "(｀・ω・´)", "(〜￣△￣)〜", "(･∀･)", "(°∀°)ﾉ", "(￣3￣)", "( ´_ゝ｀)", "(<_<)", "(>_>)", "(;¬_¬)", '("▔□▔)/', "(ﾟДﾟ≡ﾟдﾟ)!?", "(´；ω；`)", "（/TДT)/", "(^・ω・^ )", "(｡･ω･｡)", "(●￣(ｴ)￣●)", "(´･_･`)", "(-_-#)", "（￣へ￣）", "(￣ε(#￣) Σ", "（#-_-)┯━┯", "(╯°口°)╯(┴—┴", "( ♥д♥)", "(╬ﾟдﾟ)▄︻┻┳═一", "(汗)", "(苦笑)"]
+            if (comment.hasOwnProperty('text'))
+                return (comment.text.startsWith('【') | comment.text.startsWith('（')) & emoji_list.indexOf(comment.text) === -1;
+            return false;
+        }
     }
+}
 </script>
 
 <style scoped>
-    .comment-container {
-        padding: 5px 15px;
-    }
+.comment-container {
+    padding: 5px 15px;
+}
 
-    .mid {
-        margin-top: auto;
-        margin-bottom: auto;
-    }
+.mid {
+    margin-top: auto;
+    margin-bottom: auto;
+}
 </style>
