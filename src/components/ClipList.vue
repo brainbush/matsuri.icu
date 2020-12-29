@@ -11,7 +11,7 @@
                     </router-link>
                 </div>
                 <div class="w-100 d-sm-none"/>
-                <div class="col ml-4">
+                <div class="col ms-0 ms-sm-4">
                     <div class="row">
                         <div v-if="!this.clip.end_time || this.detail_view">
                             <h5>{{clip.title}}</h5>

@@ -4,11 +4,11 @@
             <div class="d-flex flex-wrap">
                 <a :href="space" target="_blank" rel="noopener noreferrer"><img class="image_container_channel"
                                                                                 alt="" :src="face"></a>
-                <div class="mid ml-2" v-if="channel_name">
+                <div class="mid ms-2" v-if="channel_name">
                     <a :href="space" target="_blank" rel="noopener noreferrer"><h3>{{channel_name}}</h3></a>
                 </div>
                 <div class="w-100 d-sm-none mt-3"/>
-                <div class="mid ml-sm-auto">
+                <div class="mid ms-sm-auto">
                     <div class="float-right">
                         <label>状态：
                             <div class="btn-group">

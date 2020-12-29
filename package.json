@@ -8,8 +8,9 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@popperjs/core": "^2.6.0",
     "axios": "^0.19.2",
-    "bootstrap": "^4.4.1",
+    "bootstrap": "^5.0.0-beta1",
     "echarts": "^4.6.0",
     "moment": "^2.24.0",
     "v-charts": "^1.19.0",
@@ -28,7 +29,8 @@
     "eslint-plugin-vue": "^5.0.0",
     "node-sass": "^4.14.1",
     "sass-loader": "^8.0.2",
-    "vue-template-compiler": "^2.6.11"},
+    "vue-template-compiler": "^2.6.11"
+  },
   "eslintConfig": {
     "root": true,
     "env": {

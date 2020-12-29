@@ -5,7 +5,7 @@
                 <label for="off_comment_date" class="col-form-label p-2">日期：</label>
                 <DatePicker id="off_comment_date" value-type="format" format="YYYY-MM-DD" v-on:change="get_off_comments"
                             :clearable="false" v-model="comment_date_input"/>
-                <div class="btn-group mr-2 ml-auto">
+                <div class="btn-group me-2 ms-auto">
                     <button type="button" v-on:click="list_status(0,false)" id="state0"
                             class="btn btn-outline-primary active">全部
                     </button>

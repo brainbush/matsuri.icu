@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="row comment mid">
+        <div class="d-flex comment mid">
             {{time}}
             <a target="_blank" rel="noopener noreferrer" class="username"
                :href="'https://space.bilibili.com/'+user_id">{{username}}</a>：
@@ -15,7 +15,6 @@
         </div>
     </div>
 </template>
-
 <script>
 export default {
     name: "LiveComment",

@@ -12,22 +12,20 @@
         </div>
         <div class="container comment-container" v-if="show_comments">
             <div class="d-flex flex-wrap">
-                <h3 class="mr-auto">全部弹幕</h3>
-                <div class="btn-group mid" v-click_outside="outside_close">
-                    <button type="button" id="export_dropdown" class="btn btn-info mr-2 dropdown-toggle"
-                            data-toggle="dropdown" aria-haspopup="true" @click="export_dropdown=!export_dropdown"
+                <h3 class="me-auto">全部弹幕</h3>
+                <div class="dropdown">
+                    <button type="button" id="export_dropdown" class="btn btn-success me-2 dropdown-toggle"
+                            aria-haspopup="true" data-bs-toggle="dropdown"
                             aria-expanded="false">导出全部弹幕
                     </button>
-                    <div class="dropdown-menu" aria-labelledby="export_dropdown"
-                         v-bind:class="{show:export_dropdown}">
-                        <a class="dropdown-item" @click="download_danmu_json(0)" style="user-select:none">JSON</a>
-                        <a class="dropdown-item" @click="download_danmu_xml(0)" style="user-select:none">XML</a>
-                        <a class="dropdown-item" @click="download_danmu_json(1)"
-                           style="user-select:none">JSON（翻译man）</a>
-                        <a class="dropdown-item" @click="download_danmu_xml(1)" style="user-select:none">XML（翻译man）</a>
-                    </div>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" @click="download_danmu_json(0)">JSON</a></li>
+                        <li><a class="dropdown-item" @click="download_danmu_xml(0)">XML</a></li>
+                        <li><a class="dropdown-item" @click="download_danmu_json(1)">JSON（翻译man）</a></li>
+                        <li><a class="dropdown-item" @click="download_danmu_xml(1)">XML（翻译man）</a></li>
+                    </ul>
                 </div>
-                <div class="btn-group mid mr-2">
+                <div class="btn-group mid me-2">
                     <button type="button" v-on:click="list_status(0)" id="state0"
                             class="btn btn-outline-primary active">全部
                     </button>
@@ -61,7 +59,8 @@
 <script>
 import ClipList from "@/components/ClipList";
 import LiveComment from "@/components/LiveComment";
-import VeLine from 'v-charts/lib/line.common.min'
+import VeLine from 'v-charts/lib/line.common.min';
+import 'bootstrap';
 
 export default {
     name: "Detail",
@@ -78,23 +77,7 @@ export default {
             webp_support: this.$parent.webp_support,
             filter_checkbox: false,
             filter_price: 0.1,
-            export_dropdown: false,
             crc_table: null
-        }
-    },
-    directives: {
-        click_outside: {
-            bind: function (element, binding, vNode) {
-                element.clickOutsideEvent = function (event) {
-                    if (!(element === event.target || element.contains(event.target))) {
-                        vNode.context[binding.expression](event);
-                    }
-                }
-                document.body.addEventListener('click', element.clickOutsideEvent)
-            },
-            unbind: function (element) {
-                document.body.removeEventListener('click', element.clickOutsideEvent)
-            }
         }
     },
     computed: {
@@ -124,10 +107,7 @@ export default {
             if (this.state === 0) {
                 return this.full_comments;
             } else if (this.state === 1) {
-                // 可它实在是太慢了!
-                // let re = RegExp('(^【)+(.*)+(】+$)');
-                // return this.full_comments.filter(comment => re.test(comment.text))
-                return this.full_comments.filter(this.translate_filter)
+                return this.get_translate_comments()
             } else {
                 if (this.filter_checkbox) {
                     let comments_with_price = this.full_comments.filter(comment => comment.hasOwnProperty('gift_name') || comment.hasOwnProperty('superchat_price'));
@@ -190,7 +170,7 @@ export default {
         },
         download_danmu_json: function (status) {
             let full_comments
-            if (status) full_comments = this.full_comments.filter(this.translate_filter)
+            if (status) full_comments = this.get_translate_comments()
             else full_comments = this.full_comments;
             let blob = new Blob([JSON.stringify({
                 info: this.clip_info,
@@ -206,7 +186,7 @@ export default {
         },
         download_danmu_xml: function (status) {
             let full_comments
-            if (status) full_comments = this.full_comments.filter(this.translate_filter)
+            if (status) full_comments = this.get_translate_comments()
             else full_comments = this.full_comments;
 
             let doc = document.implementation.createDocument("", "", null);
@@ -252,14 +232,24 @@ export default {
             }
             return (crc ^ (-1)) >>> 0;
         },
-        outside_close: function () {
-            if (this.export_dropdown) this.export_dropdown = false;
-        },
         translate_filter: comment => {
             let emoji_list = ["(⌒▽⌒)", "（￣▽￣）", "(=・ω・=)", "(｀・ω・´)", "(〜￣△￣)〜", "(･∀･)", "(°∀°)ﾉ", "(￣3￣)", "( ´_ゝ｀)", "(<_<)", "(>_>)", "(;¬_¬)", '("▔□▔)/', "(ﾟДﾟ≡ﾟдﾟ)!?", "(´；ω；`)", "（/TДT)/", "(^・ω・^ )", "(｡･ω･｡)", "(●￣(ｴ)￣●)", "(´･_･`)", "(-_-#)", "（￣へ￣）", "(￣ε(#￣) Σ", "（#-_-)┯━┯", "(╯°口°)╯(┴—┴", "( ♥д♥)", "(╬ﾟдﾟ)▄︻┻┳═一", "(汗)", "(苦笑)"]
             if (comment.hasOwnProperty('text'))
                 return (comment.text.startsWith('【') | comment.text.startsWith('（')) & emoji_list.indexOf(comment.text) === -1;
             return false;
+        },
+        get_translate_comments: function () {
+            let re = new RegExp('^(?<n>[^【】()]+?)?:*\\s*[【(](?<cc>[^【】()]+?)[】)]*$')
+            let comments = this.full_comments.filter(this.translate_filter)
+            console.log(comments.length)
+            comments.forEach(comment => {
+                let t = re.exec(comment.text)
+                if (t) {
+                    if (t[1]) comments.text = `${t[1]}:${t[2]}`
+                    else comment.text = `${t[2]}`
+                }
+            })
+            return comments
         }
     }
 }
