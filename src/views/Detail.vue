@@ -73,6 +73,7 @@ export default {
             showed: 500,
             state: 0,
             full_comments: [],
+            translated_comments: null,
             show_comments: false,
             webp_support: this.$parent.webp_support,
             filter_checkbox: false,
@@ -239,9 +240,9 @@ export default {
             return false;
         },
         get_translate_comments: function () {
+            if (this.translated_comments) return this.translated_comments;
             let re = new RegExp('^(?<n>[^【】()]+?)?:*\\s*[【(](?<cc>[^【】()]+?)[】)]*$')
             let comments = this.full_comments.filter(this.translate_filter)
-            console.log(comments.length)
             comments.forEach(comment => {
                 let t = re.exec(comment.text)
                 if (t) {
@@ -249,6 +250,7 @@ export default {
                     else comment.text = `${t[2]}`
                 }
             })
+            this.translated_comments = comments;
             return comments
         }
     }
