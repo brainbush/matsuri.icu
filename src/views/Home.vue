@@ -29,7 +29,7 @@ export default {
     components: {CardList},
     data() {
         return {
-            channel_data: JSON.parse(localStorage.getItem('channel_list')).sort(true_compare),
+            channel_data: JSON.parse(localStorage.getItem('channel_list') || "[]").sort(true_compare),
             channel_list: [],
             search_query: null,
             showed: 30,
