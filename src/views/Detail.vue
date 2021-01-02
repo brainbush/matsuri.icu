@@ -37,7 +37,18 @@
                     </button>
                 </div>
             </div>
-            <div class="row pt-2" v-if="state===2">
+            <div class="row pt-2 align-items-center" v-if="state===1">
+                <div class="col-auto">
+                    <label for="regex_input">筛选正则：</label>
+                </div>
+                <div class="col-auto">
+                    <input type="text" id="regex_input" v-model="filter_regex" class="form-control"/>
+                </div>
+                <div class="col-auto">
+                    <button class="btn btn-primary" v-on:click="get_translate_comments()">应用</button>
+                </div>
+            </div>
+            <div class="row pt-2 align-items-center" v-if="state===2">
                 <div class="col">
                     <div class="form-group">
                         <input type="checkbox" id="gift_filter_checkbox" v-model="filter_checkbox">
@@ -73,12 +84,13 @@ export default {
             showed: 500,
             state: 0,
             full_comments: [],
-            translated_comments: null,
+            translated_comments: [],
             show_comments: false,
             webp_support: this.$parent.webp_support,
             filter_checkbox: false,
             filter_price: 0.1,
-            crc_table: null
+            crc_table: null,
+            filter_regex: '^(?<n>[^【】()]+?)?:*\\s*[【(](?<cc>[^【】()]+?)[】)]*$'
         }
     },
     computed: {
@@ -108,7 +120,8 @@ export default {
             if (this.state === 0) {
                 return this.full_comments;
             } else if (this.state === 1) {
-                return this.get_translate_comments()
+                if (this.translated_comments.length === 0) this.get_translate_comments();
+                return this.translated_comments;
             } else {
                 if (this.filter_checkbox) {
                     let comments_with_price = this.full_comments.filter(comment => comment.hasOwnProperty('gift_name') || comment.hasOwnProperty('superchat_price'));
@@ -234,24 +247,24 @@ export default {
             return (crc ^ (-1)) >>> 0;
         },
         translate_filter: comment => {
-            let emoji_list = ["(⌒▽⌒)", "（￣▽￣）", "(=・ω・=)", "(｀・ω・´)", "(〜￣△￣)〜", "(･∀･)", "(°∀°)ﾉ", "(￣3￣)", "( ´_ゝ｀)", "(<_<)", "(>_>)", "(;¬_¬)", '("▔□▔)/', "(ﾟДﾟ≡ﾟдﾟ)!?", "(´；ω；`)", "（/TДT)/", "(^・ω・^ )", "(｡･ω･｡)", "(●￣(ｴ)￣●)", "(´･_･`)", "(-_-#)", "（￣へ￣）", "(￣ε(#￣) Σ", "（#-_-)┯━┯", "(╯°口°)╯(┴—┴", "( ♥д♥)", "(╬ﾟдﾟ)▄︻┻┳═一", "(汗)", "(苦笑)"]
+            let emoji_list = ["(⌒▽⌒)", "（￣▽￣）", "(=・ω・=)", "(｀・ω・´)", "(〜￣△￣)〜", "(･∀･)", "(°∀°)ﾉ", "(￣3￣)", "╮(￣▽￣)╭", "_(:3」∠)_", "( ´_ゝ｀)", "←_←", "→_→", "(<_<)", "(>_>)", "(;¬_¬)", '("▔□▔)/', "(ﾟДﾟ≡ﾟдﾟ)!?", "Σ(ﾟдﾟ;)", "Σ( ￣□￣||)", "(´；ω；`)", "（/TДT)/", "(^・ω・^ )", "(｡･ω･｡)", "(●￣(ｴ)￣●)", "ε=ε=(ノ≧∇≦)ノ", "(´･_･`)", "(-_-#)", "（￣へ￣）", "(￣ε(#￣) Σ", "ヽ(`Д´)ﾉ", "（#-_-)┯━┯", "(╯°口°)╯(┴—┴", "←◡←", "( ♥️д♥️)", "Σ>―(〃°ω°〃)♡→", "⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄", "(╬ﾟдﾟ)▄︻┻┳═一", "･*･:≡( ε:)", "(汗)", "(苦笑)"];
             if (comment.hasOwnProperty('text'))
-                return (comment.text.startsWith('【') | comment.text.startsWith('（')) & emoji_list.indexOf(comment.text) === -1;
+                return (comment.text.includes('【') | comment.text.includes('（')) & emoji_list.indexOf(comment.text) === -1;
             return false;
         },
         get_translate_comments: function () {
-            if (this.translated_comments) return this.translated_comments;
-            let re = new RegExp('^(?<n>[^【】()]+?)?:*\\s*[【(](?<cc>[^【】()]+?)[】)]*$')
+            this.translated_comments = [];
+            let re = new RegExp(this.filter_regex)
             let comments = this.full_comments.filter(this.translate_filter)
             comments.forEach(comment => {
-                let t = re.exec(comment.text)
+                let c = Object.assign({},comment)
+                let t = re.exec(c.text)
                 if (t) {
-                    if (t[1]) comments.text = `${t[1]}:${t[2]}`
-                    else comment.text = `${t[2]}`
+                    if (t[1]) c.text = `${t[1]}:${t[2]}`
+                    else c.text = `${t[2]}`
+                    this.translated_comments.push(c)
                 }
             })
-            this.translated_comments = comments;
-            return comments
         }
     }
 }
