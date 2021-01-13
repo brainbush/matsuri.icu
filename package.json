@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@popperjs/core": "^2.6.0",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "bootstrap": "^5.0.0-beta1",
     "echarts": "^4.6.0",
     "moment": "^2.24.0",
@@ -18,7 +18,7 @@
     "vue-gtm": "^2.2.0",
     "vue-router": "^3.1.5",
     "vue2-datepicker": "^3.4.1",
-    "webpack": "latest"
+    "webpack": "^4.46.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.1.0",

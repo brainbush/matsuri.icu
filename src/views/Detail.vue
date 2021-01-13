@@ -184,8 +184,10 @@ export default {
         },
         download_danmu_json: function (status) {
             let full_comments
-            if (status) full_comments = this.get_translate_comments()
-            else full_comments = this.full_comments;
+            if (status) {
+                if (this.translated_comments.length === 0) this.get_translate_comments()
+                full_comments = this.translated_comments
+            } else full_comments = this.full_comments;
             let blob = new Blob([JSON.stringify({
                 info: this.clip_info,
                 full_comments: full_comments
@@ -200,8 +202,10 @@ export default {
         },
         download_danmu_xml: function (status) {
             let full_comments
-            if (status) full_comments = this.get_translate_comments()
-            else full_comments = this.full_comments;
+            if (status) {
+                if (this.translated_comments.length === 0) this.get_translate_comments()
+                full_comments = this.translated_comments
+            } else full_comments = this.full_comments;
 
             let doc = document.implementation.createDocument("", "", null);
             let i_element = doc.createElement('i');
@@ -257,7 +261,7 @@ export default {
             let re = new RegExp(this.filter_regex)
             let comments = this.full_comments.filter(this.translate_filter)
             comments.forEach(comment => {
-                let c = Object.assign({},comment)
+                let c = Object.assign({}, comment)
                 let t = re.exec(c.text)
                 if (t) {
                     if (t[1]) c.text = `${t[1]}:${t[2]}`
