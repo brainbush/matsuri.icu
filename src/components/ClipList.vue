@@ -146,7 +146,7 @@ export default {
             }
         },
         cover: function () {
-            if (this.clip.cover === null)
+            if (this.clip.cover === null || this.clip.cover === '')
                 return '/no-cover.jpg';
             if (this.webp_support) {
                 return this.clip.cover + '@180h_320w.webp'
