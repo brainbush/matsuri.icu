@@ -112,133 +112,128 @@
 </template>
 
 <script>
-    export default {
-        name: "ClipList",
-        props: {
-            clip: Object,
-            detail_view: Boolean,
-            webp_support: Boolean,
-            viewer_view: Boolean
+export default {
+    name: "ClipList",
+    props: {
+        clip: Object,
+        detail_view: Boolean,
+        webp_support: Boolean,
+        viewer_view: Boolean
+    },
+    computed: {
+        space: function () {
+            return 'https://space.bilibili.com/' + this.clip.bilibili_uid
         },
-        computed: {
-            space: function () {
-                return 'https://space.bilibili.com/' + this.clip.bilibili_uid
-            },
-            channel_name: function () {
-                return this.clip.name
-            },
-            live: function () {
-                return this.clip.live
-            },
-            status: function () {
-                if (!this.end_time) {
-                    if (this.live) {
-                        return '直播中'
-                    } else {
-                        return '下播中'
-                    }
+        channel_name: function () {
+            return this.clip.name
+        },
+        live: function () {
+            return this.clip.live
+        },
+        status: function () {
+            if (!this.end_time) {
+                if (this.live) {
+                    return '直播中'
                 } else {
-                    if (this.live) {
-                        return '直播'
-                    } else {
-                        return '下播'
-                    }
+                    return '下播中'
                 }
-            },
-            cover: function () {
-                if (this.clip.cover === '')
-                    return '/no-cover.jpg';
-                if (this.webp_support) {
-                    return this.clip.cover + '@180h_320w.webp'
+            } else {
+                if (this.live) {
+                    return '直播'
                 } else {
-                    return this.clip.cover + '@180h_320w'
+                    return '下播'
                 }
-            },
-            start_time: function () {
-                if (this.clip.hasOwnProperty('start_time'))
+            }
+        },
+        cover: function () {
+            if (this.clip.cover === null)
+                return '/no-cover.jpg';
+            if (this.webp_support) {
+                return this.clip.cover + '@180h_320w.webp'
+            } else {
+                return this.clip.cover + '@180h_320w'
+            }
+        },
+        start_time: function () {
+            if (this.clip.hasOwnProperty('start_time'))
+                if (this.clip.start_time !== null)
                     return this.$moment(this.clip.start_time).format('YYYY/M/D H:mm:ss');
+            return '';
+        },
+        end_time: function () {
+            if (!this.clip.end_time)
                 return '';
-            },
-            end_time: function () {
-                if (!this.clip.end_time)
-                    return '';
-                return this.$moment(this.clip.end_time).format('YYYY/M/D H:mm:ss')
-            },
-            total_danmu: function () {
-                if (!this.clip.end_time)
-                    return '不可用';
-                return this.clip.total_danmu
-            },
-            total_views:function(){
-                if(!this.clip.end_time)
-                    return '不可用'
-                if(this.clip.hasOwnProperty('views'))
+            return this.$moment(this.clip.end_time).format('YYYY/M/D H:mm:ss')
+        },
+        total_danmu: function () {
+            if (!this.clip.end_time)
+                return '不可用';
+            return this.clip.total_danmu || 0
+        },
+        total_views: function () {
+            if (!this.clip.end_time)
+                return '不可用'
+            if (this.clip.hasOwnProperty('views')) {
+                if (this.clip.views != null)
                     return this.clip.views
                 else return '不可用'
-            },
-            danmu_density: function () {
-                if (this.clip.hasOwnProperty('danmu_density'))
-                    return this.clip.danmu_density;
-                return 0;
-            },
-            total_gift: function () {
-                if (this.clip.hasOwnProperty('total_gift'))
-                    return this.clip.total_gift;
-                return 0;
-            },
-            total_superchat: function () {
-                if (this.clip.hasOwnProperty('total_superchat'))
-                    return this.clip.total_superchat;
-                return 0;
-            },
-            total_reward: function () {
-                if (this.clip.hasOwnProperty('total_reward'))
-                    return this.clip.total_reward;
-                return 0;
-            }
+            } else return '不可用'
+        },
+        danmu_density: function () {
+            return this.clip.danmu_density || 0;
+        },
+        total_gift: function () {
+            return this.clip.total_gift || 0;
+        },
+        total_superchat: function () {
+            return this.clip.total_superchat || 0;
+        },
+        total_reward: function () {
+            return this.clip.total_reward || 0;
         }
     }
+}
 </script>
 
 <style scoped>
-    .image_container_clip_list {
-        height: 90px;
-        background-size: cover;
-        border-radius: 5%;
-    }
+.image_container_clip_list {
+    height: 90px;
+    background-size: cover;
+    border-radius: 5%;
+}
 
-    .container-row {
-        padding-left: 30px;
-        padding-right: 30px;
-    }
+.container-row {
+    padding-left: 30px;
+    padding-right: 30px;
+}
 
-    .tag_name {
-        color: rgba(0, 0, 0, .45);
-        font-size: 13px;
-    }
+.tag_name {
+    color: rgba(0, 0, 0, .45);
+    font-size: 13px;
+}
 
-    .tag_value {
-        font-size: 20px;
-    }
+.tag_value {
+    font-size: 20px;
+}
 
-    a:link {
-        text-decoration: none;
-        color: #212529;
-    }
+a:link {
+    text-decoration: none;
+    color: #212529;
+}
 
-    a:active {
-        text-decoration: blink;
-        color: #212529;
-    }
+a:active {
+    text-decoration: blink;
+    color: #212529;
+}
 
-    a:hover {
-        text-decoration: underline;
-        color: #212529;
-    }
+a:hover {
+    text-decoration: underline;
+    color: #212529;
+}
 
-    a:visited {
-        text-decoration: none;
-        color: #212529;
-    }
+a:visited {
+    text-decoration: none;
+    color: #212529;
+}
 
 </style>
