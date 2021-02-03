@@ -2,8 +2,13 @@
     <div>
         <div class="d-flex comment mid">
             {{time}}
-            <a target="_blank" rel="noopener noreferrer" class="username"
-               :href="'https://space.bilibili.com/'+user_id">{{username}}</a>：
+            <div v-if="this.viewer_view">
+                <a target="_blank" rel="noopener noreferrer" class="username"
+                   :href="'https://space.bilibili.com/'+user_id">{{username}}</a>：
+            </div>
+            <div v-else>
+                <router-link :to="{name:'viewer',params:{id:user_id}}" class="username">{{username}}</router-link>
+            </div>
             <div v-if="text">
                 <span style="padding-left: 15px">{{text}}</span>
                 <span v-if="this.superchat_price"

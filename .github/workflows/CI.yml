@@ -35,6 +35,21 @@ jobs:
       - name: Upload files to S3
         run: aws s3 sync dist/ s3://${{ secrets.S3_BUCKET_NAME }}
 
+      - name: SSH Deploy
+        run: |
+          mkdir -p ~/.ssh/
+          echo "$SSH_PRIVATE_KEY" > ../private.key
+          sudo chmod 600 ../private.key
+          echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          sed -i 's/\/css\//\/\/i.matsuri.icu\/css\//g' dist/index.html
+          sed -i 's/\/js\//\/\/i.matsuri.icu\/js\//g' dist/index.html
+          cat dist/index.html | ssh -i $SSH_KEY_PATH root@${{ secrets.SSH_HOST }} "cat > /usr/share/nginx/matsuri/index.html"
+        shell: bash
+        env:
+          SSH_PRIVATE_KEY: ${{secrets.SSH_PRIVATE_KEY}}
+          SSH_KNOWN_HOSTS: ${{secrets.SSH_KNOWN_HOSTS}}
+          SSH_KEY_PATH: ${{ github.workspace }}/../private.key
+
       - name: Invalid CloudFront cache
         run: |
           aws cloudfront create-invalidation \
