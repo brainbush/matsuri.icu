@@ -141,7 +141,7 @@ export default {
         this.$parent.loading = true;
         window.addEventListener('scroll', this.scrollFunc);
         this.$http
-        .get('https://api.neeemooo.com/clip/' + this.id)
+        .get('https://api.matsuri.icu/clip/' + this.id)
         .then(function (response) {
             if (response.data.status === 0) {
                 this.data = response.data.data;
@@ -169,7 +169,7 @@ export default {
             this.show_comments = true;
             this.$parent.loading = true;
             this.$http
-            .get('https://api.neeemooo.com/clip/' + this.id + '/comments')
+            .get('https://api.matsuri.icu/clip/' + this.id + '/comments')
             .then(function (response) {
                 if (response.data.status === 0) {
                     let full_comments = [];

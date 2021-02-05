@@ -82,7 +82,7 @@
             get_list: function () {
                 let url;
                 this.$parent.loading = true;
-                url = 'https://api.neeemooo.com/channel/' + this.channel.toString() + '/clips';
+                url = 'https://api.matsuri.icu/channel/' + this.channel.toString() + '/clips';
                 this.$http
                     .get(url)
                     .then(function (response) {
@@ -104,7 +104,7 @@
             if (Object.entries(this.channel_info).length === 0) {
                 console.log('Fetch channel info');
                 this.$http
-                    .get('https://api.neeemooo.com/channel/' + this.channel.toString())
+                    .get('https://api.matsuri.icu/channel/' + this.channel.toString())
                     .then(function (response) {
                         if (response.data.status === 0) {
                             this.channel_info = response.data.data;

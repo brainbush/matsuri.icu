@@ -34,7 +34,7 @@
             this.$parent.loading = true;
             window.addEventListener('scroll', this.scrollFunc);
             this.$http
-                .get('https://api.neeemooo.com/viewer/' + this.id)
+                .get('https://api.matsuri.icu/viewer/' + this.id)
                 .then(function (response) {
                     if (response.data.status === 0) {
                         this.data = response.data.data;
