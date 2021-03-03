@@ -7,7 +7,7 @@
             </div>
         </div>
         <div class="container">
-            <p>一个非常Anti的站用来采集各位观众的评论进行统计<s>特定观众</s>
+            <p>一个非常Anti的站
                 （一不小心致敬了
                 <a target="_blank" rel="noopener noreferrer"
                    href="https://mamedaifuku.sakura.ne.jp/live_stream/html/index.html">豆大福</a>的样子）<s>明明功能比人家少那么多</s>。
@@ -24,7 +24,7 @@
             </p>
             <p>目前各种完善中可能遇到不稳定的情况请见谅！</p>
             <p>如果有需要增加收录的也可以通过上面的方式联系！</p>
-            <p>数据库压力大大大&nbsp;已经换成PostgreSQl了，估计会好一些
+            <p>数据库压力大大大&nbsp;已经换成PostgreSQL了，估计会好一些
             <br>旧MongoDB的数据：<code>magnet:?xt=urn:btih:29A01036F0EEED880EB94A471D87C3FC7D4BAE92</code>（2020年2月至2021年1月31日）
             <br><s>快做成管人观众发言语料库</s></p>
             <p>程序力非常弱可能一堆乱七八糟的情况也请见谅！</p>
