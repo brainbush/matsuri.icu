@@ -70,8 +70,7 @@
 <script>
 import ClipList from "@/components/ClipList";
 import LiveComment from "@/components/LiveComment";
-import VeLine from 'v-charts/lib/line.common.min';
-import 'bootstrap';
+import VeLine from 'v-charts/lib/line.common';
 
 export default {
     name: "Detail",

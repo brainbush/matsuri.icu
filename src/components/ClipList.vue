@@ -147,7 +147,7 @@ export default {
         },
         cover: function () {
             if (this.clip.cover === null || this.clip.cover === '')
-                return '//i.matsuri.icu/no-cover.jpg';
+                return '//matsuri.icu/no-cover.jpg';
             if (this.webp_support) {
                 return this.clip.cover + '@180h_320w.webp'
             } else {

@@ -18,5 +18,13 @@ module.exports = {
             )
         ],
         optimization: {minimize: true}
+    },
+    chainWebpack: config => {
+        config.plugin('html').tap(options => {
+            if (process.env.NODE_ENV === 'production') {
+                options[0].minify.removeComments = false;
+            }
+            return options
+        })
     }
 };
