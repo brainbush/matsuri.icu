@@ -1,1 +1,10 @@
-<html><script>window.location.href = "https://www.douban.com/group/topic/211858661/";</script></html>
+<html>
+<script>
+    let parser = document.createElement('a');
+    parser.href = document.referrer;
+    let hostname = parser.hostname;
+    if (hostname.includes('nga')) window.location.href = "https://bbs.nga.cn/thread.php?fid=-18468334";
+    else if (hostname.includes('baidu')) window.location.href = "https://tieba.baidu.com/f?kw=asoul";
+    else window.location.href = "https://www.douban.com/group/topic/211858661/";
+</script>
+</html>
