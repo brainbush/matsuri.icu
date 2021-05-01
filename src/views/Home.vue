@@ -35,7 +35,7 @@ export default {
             showed: 30,
             show_hidden: this.$route.query.hasOwnProperty('hey'),
             webp_support: this.$parent.webp_support,
-            head_list: ['别骂了，对不起，ごめんなさい~', '本社爆破~！', '内鬼全鲨了！', '嘉门🙏']
+            head_list: ['别骂了，对不起，ごめんなさい~', '本社爆破~！', '内鬼全鲨了！', '嘉门🙏', 'まつり指的可是麻酱啊']
         }
     },
     computed: {
