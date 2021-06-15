@@ -8,6 +8,9 @@
         <CardList v-for="channel in display_result" :channel="channel" :webp_support="webp_support"
                   :key="channel.bilibili_uid"/>
         <div class="empty"></div>
+        <footer class="footer mt-auto py-1">
+                <span>鄂ICP备2021002054号</span>
+        </footer>
     </div>
 </template>
 
@@ -98,5 +101,12 @@ export default {
 <style scoped>
 .empty {
     padding-bottom: 30px;
+}
+
+footer {
+    background: rgba(255,255,255,0.5);
+    bottom: 0;
+    font-size: 0.6rem;
+    /*position: fixed;*/
 }
 </style>
