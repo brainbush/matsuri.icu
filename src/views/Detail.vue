@@ -37,6 +37,14 @@
                     </button>
                 </div>
             </div>
+            <div class="row pt-2 align-items-center" v-if="state===0">
+                <div class="col-auto">
+                    <label for="search_input">标记词👀：</label>
+                </div>
+                <div class="col-auto">
+                    <input type="text" id="search_input" v-model="search_text" class="form-control">
+                </div>
+            </div>
             <div class="row pt-2 align-items-center" v-if="state===1">
                 <div class="col-auto">
                     <label for="regex_input">筛选正则：</label>
@@ -90,6 +98,7 @@ export default {
             filter_checkbox: false,
             filter_price: 0.1,
             crc_table: null,
+            search_text: '',
             filter_regex: '^(?<n>[^【】()]+?)?:*\\s*[【(](?<cc>[^【】()]+?)[】)]*$'
         }
     },
@@ -118,7 +127,8 @@ export default {
         },
         comments_showed_full: function () {
             if (this.state === 0) {
-                return this.full_comments;
+                if (this.search_text.length === 0) return this.full_comments;
+                return this.full_comments.filter(comment => comment.text !== undefined && comment.text.includes(this.search_text))
             } else if (this.state === 1) {
                 if (this.translated_comments.length === 0) this.get_translate_comments();
                 return this.translated_comments;
