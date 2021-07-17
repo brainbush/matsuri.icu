@@ -4,6 +4,7 @@ import axios from 'axios'
 import router from './router'
 import VueGtm from 'vue-gtm'
 import moment from 'moment'
+import './registerServiceWorker'
 
 moment.locale('zh-cn');
 
