@@ -10,7 +10,7 @@
   "dependencies": {
     "@popperjs/core": "^2.6.0",
     "axios": "^0.21.1",
-    "bootstrap": "^5.0.0-beta1",
+    "bootstrap": "5.0.0-beta3",
     "echarts": "^4.6.0",
     "moment": "^2.24.0",
     "register-service-worker": "^1.7.1",
@@ -22,16 +22,14 @@
     "webpack": "^4.46.0"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^4.1.0",
-    "@vue/cli-plugin-eslint": "^4.1.0",
-    "@vue/cli-plugin-pwa": "^4.5.13",
-    "@vue/cli-service": "^4.1.0",
+    "@vue/cli-plugin-babel": "^4.5.13",
+    "@vue/cli-plugin-eslint": "^4.5.13",
+    "@vue/cli-service": "^4.5.13",
     "babel-eslint": "^10.0.3",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
-    "node-sass": "^4.14.1",
-    "sass-loader": "^8.0.2",
-    "vue-template-compiler": "^2.6.11"
+    "sass": "^1.32.12",
+    "sass-loader": "^8.0.2"
   },
   "eslintConfig": {
     "root": true,

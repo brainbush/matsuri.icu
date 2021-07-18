@@ -10,17 +10,6 @@ module.exports = {
             }
         }
     },
-    pwa:{
-        name:'ICU for Viewers',
-        themeColor: "#212529",
-        msTileColor: '#000000',
-        appleMobileWebAppCapable: 'yes',
-        appleMobileWebAppStatusBarStyle: 'black',
-        workboxPluginMode: 'InjectManifest',
-        workboxOptions: {
-            swSrc: 'src/service-worker.js'
-        }
-    },
     configureWebpack: {
         plugins: [
             new webpack.ContextReplacementPlugin(
