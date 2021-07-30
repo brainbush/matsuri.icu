@@ -4,7 +4,7 @@
                   :detail_view="true" :viewer_view="false"/>
         <div class="row">
             <div class="col">
-                <ve-line :data="chartData"/>
+                <v-chart class="chart" :option="chart_data" @datazoom="data_zoom" autoresize/>
             </div>
         </div>
         <div class="col-12">
@@ -78,12 +78,13 @@
 <script>
 import ClipList from "@/components/ClipList";
 import LiveComment from "@/components/LiveComment";
-import VeLine from 'v-charts/lib/line.common';
 import 'bootstrap';
+import VChart from "vue-echarts";
+import 'echarts'
 
 export default {
     name: "Detail",
-    components: {ClipList, LiveComment, VeLine},
+    components: {ClipList, LiveComment, 'v-chart': VChart},
 
     data() {
         return {
@@ -99,19 +100,62 @@ export default {
             filter_price: 0.1,
             crc_table: null,
             search_text: '',
-            filter_regex: '^(?<n>[^【】()]+?)?:*\\s*[【(](?<cc>[^【】()]+?)[】)]*$'
+            filter_regex: '^(?<n>[^【】()]+?)?:*\\s*[【(](?<cc>[^【】()]+?)[】)]*$',
+            time_range: {}
         }
     },
     computed: {
-        chartData: function () {
+        chart_data: function () {
             let rows = [];
             let columns = [];
-            if (this.highlights.length) {
-                rows = this.highlights;
-                columns = Object.keys(rows[0]);
-                rows.forEach(row => row.time = this.$moment(row.time).format('H:mm'));
-            }
-            return {columns: columns, rows: rows};
+            let series = [];
+            let legend_data;
+            let legend_selected = {};
+            if (this.data.hasOwnProperty('highlights')) {
+                columns = Object.keys(this.data.highlights[0]);
+                rows.push(columns);
+                this.data.highlights.forEach(row => rows.push(Object.values(row)))
+                for (let i = 1; i < columns.length; i++) {
+                    series.push({
+                        type: "line",
+                        encode: {x: "time", y: columns[i]},
+                        name: columns[i],
+                        smooth: true,
+                        showSymbol: false
+                    })
+                }
+                legend_data = columns.slice(1);
+                for (let i = 0; i < legend_data.length; i++) {
+                    legend_selected[legend_data[i]] = i < 5;
+                }
+                return {
+                    tooltip: {
+                        trigger: 'axis',
+                        axisPointer: {animation: false},
+                        backgroundColor: 'rgba(50, 50, 50, 0.7)',
+                        borderColor: 'rgba(50,50,50,0.7)',
+                        textStyle: {color: '#fff', height: '5px'}
+                    },
+                    dataZoom: [
+                        {
+                            id: 'time',
+                            type: 'slider'
+                        }
+                    ],
+                    legend: {data: legend_data, selected: legend_selected},
+                    xAxis: {
+                        type: "time",
+                    },
+                    yAxis: {
+                        type: "value",
+                    },
+                    dataset: {
+                        dimensions: columns,
+                        source: rows
+                    },
+                    series: series
+                }
+            } else return {}
         },
         clip_info: function () {
             if (this.data.hasOwnProperty('start_time')) {
@@ -120,15 +164,13 @@ export default {
                 return info;
             } else return {}
         },
-        highlights: function () {
-            if (this.data.hasOwnProperty('highlights')) {
-                return this.data.highlights
-            } else return [];
-        },
         comments_showed_full: function () {
+            let full_comments;
+            if (!this.time_range.hasOwnProperty('start')) full_comments = this.full_comments;
+            else full_comments = this.full_comments.filter(comment => comment.time >= this.time_range.start && comment.time <= this.time_range.end)
             if (this.state === 0) {
-                if (this.search_text.length === 0) return this.full_comments;
-                return this.full_comments.filter(comment => comment.text !== undefined && comment.text.includes(this.search_text))
+                if (this.search_text.length === 0) return full_comments;
+                return full_comments.filter(comment => comment.text !== undefined && comment.text.includes(this.search_text))
             } else if (this.state === 1) {
                 if (this.translated_comments.length === 0) this.get_translate_comments();
                 return this.translated_comments;
@@ -139,7 +181,6 @@ export default {
                 } else {
                     return this.full_comments.filter(comment => comment.hasOwnProperty('gift_name') || comment.hasOwnProperty('superchat_price'));
                 }
-
             }
         },
         comments_showed: function () {
@@ -161,6 +202,14 @@ export default {
         }.bind(this))
     },
     methods: {
+        data_zoom(params) {
+            console.log(params);
+            let percent = (this.clip_info.end_time - this.clip_info.start_time) / 100
+            this.time_range = {
+                start: this.clip_info.start_time + params.start * percent,
+                end: this.clip_info.start_time + params.end * percent
+            }
+        },
         scrollFunc() {
             if (document.body.clientHeight - window.scrollY - window.innerHeight < (document.body.clientHeight / this.showed)) {
                 if (this.showed < this.comments_showed_full.length)
@@ -267,9 +316,12 @@ export default {
             return false;
         },
         get_translate_comments: function () {
+            let full_comments;
+            if (!this.time_range.hasOwnProperty('start')) full_comments = this.full_comments;
+            else full_comments = this.full_comments.filter(comment => comment.time >= this.time_range.start && comment.time <= this.time_range.end)
             this.translated_comments = [];
             let re = new RegExp(this.filter_regex)
-            let comments = this.full_comments.filter(this.translate_filter)
+            let comments = full_comments.filter(this.translate_filter)
             comments.forEach(comment => {
                 let c = Object.assign({}, comment)
                 let t = re.exec(c.text)
@@ -292,5 +344,9 @@ export default {
 .mid {
     margin-top: auto;
     margin-bottom: auto;
+}
+
+.chart {
+    height: 400px;
 }
 </style>
