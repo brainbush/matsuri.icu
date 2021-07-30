@@ -117,6 +117,7 @@ export default {
             let legend_data;
             let legend_selected = {};
             if (this.data.hasOwnProperty('highlights')) {
+                if (!Array.isArray(this.data.highlights)) return {}
                 columns = Object.keys(this.data.highlights[0]);
                 rows.push(columns);
                 this.data.highlights.forEach(row => rows.push(Object.values(row)))
@@ -208,7 +209,6 @@ export default {
     },
     methods: {
         data_zoom(params) {
-            console.log(params);
             let percent = (this.clip_info.end_time - this.clip_info.start_time) / 100
             this.time_range = {
                 start: this.clip_info.start_time + params.start * percent,
