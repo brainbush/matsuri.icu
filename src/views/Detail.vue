@@ -78,9 +78,14 @@
 <script>
 import ClipList from "@/components/ClipList";
 import LiveComment from "@/components/LiveComment";
-import 'bootstrap';
+import "bootstrap";
 import VChart from "vue-echarts";
-import 'echarts'
+import {use} from "echarts/core";
+import {LineChart} from "echarts/charts";
+import {CanvasRenderer} from "echarts/renderers"
+import {LegendComponent, DataZoomComponent, TooltipComponent, GridComponent, DatasetComponent} from "echarts/components"
+
+use([CanvasRenderer, LegendComponent, DataZoomComponent, TooltipComponent, GridComponent, LineChart, DatasetComponent]);
 
 export default {
     name: "Detail",
