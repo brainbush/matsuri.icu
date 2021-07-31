@@ -111,7 +111,6 @@ export default {
     },
     computed: {
         chart_data: function () {
-            let rows = [];
             let columns = [];
             let series = [];
             let legend_data;
@@ -119,9 +118,8 @@ export default {
             if (this.data.hasOwnProperty('highlights')) {
                 if (!Array.isArray(this.data.highlights)) return {}
                 columns = Object.keys(this.data.highlights[0]);
-                rows.push(columns);
-                this.data.highlights.forEach(row => rows.push(Object.values(row)))
-                for (let i = 1; i < columns.length; i++) {
+                for (let i = 0; i < columns.length; i++) {
+                    if (columns[i] === 'time') continue;
                     series.push({
                         type: "line",
                         encode: {x: "time", y: columns[i]},
@@ -130,7 +128,8 @@ export default {
                         showSymbol: false
                     })
                 }
-                legend_data = columns.slice(1);
+                legend_data = columns.slice();
+                legend_data.splice(legend_data.indexOf('time'), 1);
                 for (let i = 0; i < legend_data.length; i++) {
                     legend_selected[legend_data[i]] = i < 5;
                 }
@@ -149,15 +148,11 @@ export default {
                         }
                     ],
                     legend: {data: legend_data, selected: legend_selected},
-                    xAxis: {
-                        type: "time",
-                    },
-                    yAxis: {
-                        type: "value",
-                    },
+                    xAxis: {type: "time"},
+                    yAxis: {type: "value"},
                     dataset: {
                         dimensions: columns,
-                        source: rows
+                        source: this.data.highlights
                     },
                     series: series
                 }
