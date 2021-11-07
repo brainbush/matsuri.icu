@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@popperjs/core": "^2.6.0",
-    "axios": "^0.21.1",
+    "axios": "^0.21.2",
     "bootstrap": "5.0.0-beta3",
     "echarts": "^5.1.2",
     "moment": "^2.24.0",
