@@ -1,7 +1,6 @@
 <template>
     <div>
         <h1>{{head_text}}</h1>
-        <div class="alert alert-primary" role="alert">因为这几周被人用美国IP池恶意抓，整个后端都给抓挂了，因此屏蔽美国IP访问，请见谅！（那个在抓的，私我，给你一拳拳）</div>
         <div class="form-group">
             <label for="search_input"> </label>
             <input type="text" v-model="search_query" class="form-control col-12" id="search_input" placeholder="搜索">
