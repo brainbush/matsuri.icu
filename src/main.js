@@ -1,19 +1,15 @@
-import Vue from 'vue'
+import { createApp } from 'vue'
 import App from './App.vue'
 import axios from 'axios'
 import router from './router'
-import VueGtm from 'vue-gtm'
+import {createGtm} from '@gtm-support/vue-gtm'
 import moment from 'moment'
 
 moment.locale('zh-cn');
 
-Vue.prototype.$moment = moment;
-Vue.config.productionTip = false;
-Vue.prototype.$http = axios;
-
-Vue.use(VueGtm, {id: 'GTM-52TBTCD', vueRouter: router});
-
-new Vue({
-    router,
-    render: h => h(App),
-}).$mount('#app');
+const app = createApp(App)
+app.use(router);
+app.config.globalProperties.$http = axios;
+app.config.globalProperties.$moment =moment;
+app.use(createGtm({id: 'GTM-52TBTCD', vueRouter: router}));
+app.mount('#app')

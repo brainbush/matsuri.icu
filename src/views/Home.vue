@@ -37,7 +37,7 @@ export default {
             search_query: null,
             showed: 30,
             show_hidden: this.$route.query.hasOwnProperty('hey'),
-            webp_support: this.$parent.webp_support,
+            webp_support: this.$root.webp_support,
             head_list: ['别骂了，对不起，ごめんなさい~', '本社爆破~！', '内鬼全鲨了！', '嘉门🙏', 'まつり指的可是麻酱啊', '你们到底是看管人还是看管人观众啊', '你们是在和SC聊天还是在和然然聊天', '海子姐在看吗，在看的话就mua一个']
         }
     },
@@ -73,14 +73,14 @@ export default {
         document.title = 'ICU for Viewers';
         window.addEventListener('scroll', this.scrollFunc);
         if (this.channel_list === null)
-            this.$parent.loading = true;
+            this.$root.loading = true;
         this.$http
         .get('https://api.matsuri.icu/channel')
         .then(function (response) {
             if (response.data.status === 0) {
                 this.channel_data = response.data.data;
                 localStorage.setItem('channel_list', JSON.stringify(response.data.data));
-                this.$parent.loading = false;
+                this.$root.loading = false;
             }
         }.bind(this))
         .catch(error => {

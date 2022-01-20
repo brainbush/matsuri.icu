@@ -36,7 +36,7 @@ export default {
             recaptcha_succeed: false,
             recaptcha_sitekey: '6LdfylIbAAAAAN-SejK19mLMPkEtfrMVohDPa6oe',
             recaptcha_token: "",
-            webp_support: this.$parent.webp_support
+            webp_support: this.$root.webp_support
         }
     },
     mounted() {
@@ -54,7 +54,7 @@ export default {
         },
         scrollFunc() {
             if (document.body.clientHeight - window.scrollY - window.innerHeight < (document.body.clientHeight / this.showed)) {
-                if (!this.is_end && !this.$parent.loading) {
+                if (!this.is_end && !this.$root.loading) {
                     window.removeEventListener('scroll', this.scrollFunc);
                     this.load_more();
                     this.showed += 10;
@@ -63,7 +63,7 @@ export default {
             }
         },
         load_more() {
-            this.$parent.loading = true;
+            this.$root.loading = true;
             this.$http
             .get(`https://api.matsuri.icu/viewer/${this.id}?page=${++this.page}`, {headers: {token: this.recaptcha_token}})
             .then(function (response) {
@@ -72,7 +72,7 @@ export default {
                     if (response.data.data.length === 0)
                         this.is_end = true;
                     if (response.data.data.length > 0 && document.title === 'ICU for Viewers') document.title = this.data[0].full_comments[0].username + ' - ICU for Viewers';
-                    this.$parent.loading = false;
+                    this.$root.loading = false;
                 }
             }.bind(this))
         }

@@ -52,7 +52,7 @@
                 channel: parseInt(this.$route.params.channel),
                 clip_list: [],
                 online_clips: true,
-                webp_support: this.$parent.webp_support,
+                webp_support: this.$root.webp_support,
                 showed: 20
             }
         },
@@ -81,14 +81,14 @@
             },
             get_list: function () {
                 let url;
-                this.$parent.loading = true;
+                this.$root.loading = true;
                 url = 'https://api.matsuri.icu/channel/' + this.channel.toString() + '/clips';
                 this.$http
                     .get(url)
                     .then(function (response) {
                         if (response.data.status === 0) {
                             this.clip_list = response.data.data;
-                            this.$parent.loading = false;
+                            this.$root.loading = false;
                         }
                     }.bind(this))
             },

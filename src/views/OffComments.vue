@@ -3,8 +3,8 @@
         <div class="container">
             <div class="form-inline d-flex mb-3">
                 <label for="off_comment_date" class="col-form-label p-2">日期：</label>
-                <DatePicker id="off_comment_date" value-type="format" format="YYYY-MM-DD" v-on:change="get_off_comments"
-                            :clearable="false" v-model="comment_date_input"/>
+                <date-picker id="off_comment_date" value-type="format" format="YYYY-MM-DD" v-on:change="get_off_comments"
+                             v-model:value="comment_date_input"/>
                 <div class="btn-group me-2 ms-auto">
                     <button type="button" v-on:click="list_status(0,false)" id="state0"
                             class="btn btn-outline-primary active">全部
@@ -22,8 +22,8 @@
 
 <script>
     import LiveComment from "@/components/LiveComment";
-    import DatePicker from "vue2-datepicker"
-    import 'vue2-datepicker/locale/zh-cn';
+    import DatePicker from "vue-datepicker-next"
+    import 'vue-datepicker-next/locale/zh-cn';
 
     function time_compare(a, b) {
         return a.time - b.time;
@@ -36,7 +36,7 @@
             uid: Number
         }, data() {
             return {
-                comment_date_input: "",
+                comment_date_input: null,
                 data: {},
                 showed: 500,
                 state: 0,
@@ -106,7 +106,7 @@
 </script>
 
 <style lang="scss">
-    @import "~vue2-datepicker/scss/index.scss";
+    @import "~vue-datepicker-next/scss/index.scss";
 </style>
 <style scoped>
     @media (max-width: 540px) {

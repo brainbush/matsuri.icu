@@ -1,5 +1,4 @@
-import Vue from 'vue'
-import Router from 'vue-router'
+import {createRouter, createWebHistory} from 'vue-router'
 
 import Home from "@/views/Home";
 import Channel from "@/views/Channel";
@@ -7,19 +6,19 @@ import Detail from "@/views/Detail";
 import Viewer from "@/views/Viewer"
 import About from "@/views/About";
 
-Vue.use(Router);
-
 const routes = [
     {path: '/', name: 'home', component: Home},
     {path: '/channel/:channel', name: 'channel', component: Channel},
     {path: '/detail/:id', name: 'detail', component: Detail},
     {path: '/viewer/:id', name: 'viewer', component: Viewer},
     {path: '/about', name: 'about', component: About},
-    {path: '*', redirect: '/'}
+    {path: '/:catchAll(.*)', redirect: '/'}
 ];
 
-export default new Router({
+const router = createRouter({
     mode: 'history',
-    base: process.env.BASE_URL,
+    history: createWebHistory(process.env.BASE_URL),
     routes: routes
 })
+
+export default router

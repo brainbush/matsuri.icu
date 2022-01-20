@@ -100,7 +100,7 @@ export default {
             full_comments: [],
             translated_comments: [],
             show_comments: false,
-            webp_support: this.$parent.webp_support,
+            webp_support: this.$root.webp_support,
             filter_checkbox: false,
             filter_price: 0.1,
             crc_table: null,
@@ -190,7 +190,7 @@ export default {
     },
     mounted() {
         document.title = 'ICU for Viewers';
-        this.$parent.loading = true;
+        this.$root.loading = true;
         window.addEventListener('scroll', this.scrollFunc);
         this.$http
         .get('https://api.matsuri.icu/clip/' + this.id)
@@ -198,7 +198,7 @@ export default {
             if (response.data.status === 0) {
                 this.data = response.data.data;
                 document.title = this.data.title + ' - ' + this.data.name + ' - ICU for Viewers'
-                this.$parent.loading = false;
+                this.$root.loading = false;
             }
         }.bind(this))
     },
@@ -226,7 +226,7 @@ export default {
         },
         get_comments: function () {
             this.show_comments = true;
-            this.$parent.loading = true;
+            this.$root.loading = true;
             this.$http
             .get('https://api.matsuri.icu/clip/' + this.id + '/comments')
             .then(function (response) {
@@ -237,7 +237,7 @@ export default {
                         full_comments.push(comment)
                     });
                     this.full_comments = full_comments;
-                    this.$parent.loading = false;
+                    this.$root.loading = false;
                 }
             }.bind(this))
         },
