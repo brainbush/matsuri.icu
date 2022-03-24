@@ -23,7 +23,7 @@
                 <a target="_blank" rel="noopener noreferrer" href="https://t.me/brainbush"><code>@brainbush</code></a>。
             </p>
             <p>目前各种完善中可能遇到不稳定的情况请见谅！</p>
-            <p>如果有需要增加收录的也可以通过上面的方式联系！</p>
+            <p>如果有需要增加收录的也可以通过上面的方式联系！或者点<a target="_blank" rel="noopener noreferrer" href="https://add.matsuri.icu/">这里</a></p>
             <p>数据库压力大大大&nbsp;已经换成PostgreSQL了，估计会好一些
             <br>旧MongoDB的数据：<code>magnet:?xt=urn:btih:29A01036F0EEED880EB94A471D87C3FC7D4BAE92</code>（2020年2月至2021年1月31日）
             <br><s>快做成管人观众发言语料库</s></p>
