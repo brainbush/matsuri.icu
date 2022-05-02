@@ -1,17 +1,15 @@
 <template>
-    <div>
-        <div class="d-flex comment mid">
-            {{time}}
-            <a target="_blank" rel="noopener noreferrer" class="username"
-               :href="'https://space.bilibili.com/'+user_id">{{username}}</a>
-            <div v-if="text">
-                <span style="padding-left: 15px">{{text}}</span>
-                <span v-if="this.superchat_price"
-                      style="padding-left: 15px;color: brown">SuperChat: ￥{{superchat_price}}</span>
-            </div>
-            <div v-else>
-                <div style="color:red;padding-left: 15px">礼物：{{gift_name}}×{{gift_num}}，￥{{gift_price}}</div>
-            </div>
+    <div class="d-flex comment">
+        {{ time }}
+        <a target="_blank" rel="noopener noreferrer" class="username"
+           :href="'https://space.bilibili.com/'+user_id">{{ username }}</a>
+        <div v-if="text">
+            <span style="padding-left: 15px">{{ text }}</span>
+            <span v-if="this.superchat_price"
+                  style="padding-left: 15px;color: brown">SuperChat: ￥{{ superchat_price }}</span>
+        </div>
+        <div v-else>
+            <div style="color:red;padding-left: 15px">礼物：{{ gift_name }}×{{ gift_num }}，￥{{ gift_price }}</div>
         </div>
     </div>
 </template>
