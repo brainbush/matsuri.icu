@@ -53,7 +53,7 @@ export default {
                 return this.channel_list;
             let query_lowercase = this.search_query.toLowerCase();
             return this.channel_list.filter((item) => {
-                return item.name.toLowerCase().match(query_lowercase)
+                return Number(query_lowercase) === item.bilibili_uid || Number(query_lowercase) === item.bilibili_live_room || item.name.toLowerCase().match(query_lowercase)
             })
         },
         display_result: function () {
