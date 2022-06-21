@@ -88,7 +88,7 @@ import {LegendComponent, DataZoomComponent, TooltipComponent, GridComponent, Dat
 use([CanvasRenderer, LegendComponent, DataZoomComponent, TooltipComponent, GridComponent, LineChart, DatasetComponent]);
 
 export default {
-    name: "Detail",
+    name: "DetailPage",
     components: {ClipList, LiveComment, 'v-chart': VChart},
 
     data() {

@@ -28,7 +28,7 @@ function true_compare(a, b) {
 }
 
 export default {
-    name: "Home",
+    name: "HomePage",
     components: {CardList},
     data() {
         return {

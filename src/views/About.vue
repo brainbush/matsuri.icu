@@ -39,7 +39,7 @@
 
 <script>
     export default {
-        name: "About",
+        name: "AboutPage",
         mounted(){
             document.title = '关于 - ICU for Viewers'
         }

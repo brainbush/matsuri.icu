@@ -44,7 +44,7 @@
     import OffComments from "@/views/OffComments";
 
     export default {
-        name: "Channel",
+        name: "ChannelPage",
         components: {ClipList, OffComments},
         data() {
             return {

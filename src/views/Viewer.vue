@@ -24,7 +24,7 @@ import ClipList from "@/components/ClipList";
 import LiveComment from "@/components/LiveComment";
 
 export default {
-    name: "Viewer",
+    name: "ViewerPage",
     components: {ClipList, LiveComment},
     data() {
         return {
