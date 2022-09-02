@@ -107,6 +107,6 @@ footer {
     background: rgba(255,255,255,0.5);
     bottom: 0;
     font-size: 0.6rem;
-    /*position: fixed;*/
+    position: fixed;
 }
 </style>
