@@ -9,7 +9,7 @@
                   :key="channel.bilibili_uid"/>
         <div class="empty"></div>
         <footer class="footer mt-auto py-1">
-                <span>鄂ICP备2021002054号</span>
+                <a hrer="https://beian.miit.gov.cn/"><span>鄂ICP备2021002054号</span></a>
         </footer>
     </div>
 </template>
