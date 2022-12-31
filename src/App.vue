@@ -60,5 +60,5 @@ hr {
   border-top: 1px solid rgba(0, 0, 0, .1) !important;
 }
 
-@import "~bootstrap/scss/bootstrap";
+@import "node_modules/bootstrap/scss/bootstrap";
 </style>

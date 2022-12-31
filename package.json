@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
   },
   "dependencies": {
     "@gtm-support/vue-gtm": "^1.6.0",
@@ -15,27 +15,23 @@
     "core-js": "^3.23.2",
     "echarts": "^5.3.3",
     "moment": "^2.29.4",
-    "vue": "^3.2.37",
+    "vue": "^3.2.45",
     "vue-datepicker-next": "^1.0.2",
     "vue-echarts": "^6.1.0",
     "vue-router": "^4.0.16"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.16",
-    "@babel/eslint-parser": "^7.12.16",
-    "@vue/cli-plugin-babel": "~5.0.6",
-    "@vue/cli-plugin-eslint": "~5.0.6",
-    "@vue/cli-plugin-router": "~5.0.6",
-    "@vue/cli-service": "~5.0.6",
     "eslint": "^7.32.0",
     "eslint-plugin-vue": "^8.0.3",
     "sass": "^1.52.3",
-    "sass-loader": "^8.0.2"
+    "@vitejs/plugin-vue": "^4.0.0",
+    "vite": "^4.0.3"
   },
   "eslintConfig": {
     "root": true,
     "env": {
-      "node": true
+      "node": true,
+      "es2021": true
     },
     "extends": [
       "plugin:vue/vue3-essential",
@@ -44,9 +40,6 @@
     "rules": {
       "no-console": "off",
       "no-prototype-builtins": "off"
-    },
-    "parserOptions": {
-      "parser": "@babel/eslint-parser"
     }
   },
   "browserslist": [

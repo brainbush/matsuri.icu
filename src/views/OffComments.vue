@@ -23,7 +23,6 @@
 <script>
     import LiveComment from "@/components/LiveComment";
     import DatePicker from "vue-datepicker-next"
-    import 'vue-datepicker-next/locale/zh-cn';
 
     function time_compare(a, b) {
         return a.time - b.time;
@@ -106,7 +105,7 @@
 </script>
 
 <style lang="scss">
-    @import "~vue-datepicker-next/scss/index.scss";
+    @import "node_modules/vue-datepicker-next/scss/index.scss";
 </style>
 <style scoped>
     @media (max-width: 540px) {
