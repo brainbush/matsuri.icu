@@ -12,5 +12,5 @@ const app = createApp(App)
 app.use(router);
 app.config.globalProperties.$http = axios;
 app.config.globalProperties.$moment = moment;
-app.use(createGtm({id: import.meta.env.VUE_APP_GTM, vueRouter: router}));
+app.use(createGtm({id: import.meta.env.VITE_APP_GTM, vueRouter: router}));
 app.mount('#app')
