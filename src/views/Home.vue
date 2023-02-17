@@ -38,7 +38,7 @@ export default {
             showed: 30,
             show_hidden: this.$route.query.hasOwnProperty('hey'),
             webp_support: this.$root.webp_support,
-            head_list: ['别骂了，对不起，ごめんなさい~', '本社爆破~！', '内鬼全鲨了！', '嘉门🙏', 'まつり指的可是麻酱啊', '你们到底是看管人还是看管人观众啊', '你们是在和SC聊天还是在和然然聊天', '海子姐在看吗，在看的话就mua一个']
+            head_list: ['别骂了，对不起，ごめんなさい~', '本社爆破~！', '内鬼全鲨了！', '嘉门🙏', 'まつり指的可是麻酱啊', '你们到底是看管人还是看管人观众啊', '你们是在和SC聊天还是在和然然聊天', '海子姐在看吗，在看的话就mua一个', '明前奶绿祝你，早安，午安，晚安']
         }
     },
     computed: {
