@@ -16,10 +16,7 @@
                 <a target="_blank" rel="noopener noreferrer" href="https://github.com/brainbush/matsuri.icu">前端</a>&nbsp;
                 <a target="_blank" rel="noopener noreferrer" href="https://github.com/brainbush/api.matsuri.icu">后端</a>&nbsp;
                 <s>孩子第一次用 Vue 和 Express 写的东西不太好……</s></p>
-            <p>一般情况下直播间下播后1分钟左右都会更新，如果遇到问题请联系B站私信ID
-                <a target="_blank" rel="noopener noreferrer"
-                   href="https://message.bilibili.com/#whisper/mid186629"><code>186629</code></a>
-                或者 Telegram:
+            <p>一般情况下直播间下播后1分钟左右都会更新，如果遇到问题请联系 Telegram:
                 <a target="_blank" rel="noopener noreferrer" href="https://t.me/brainbush"><code>@brainbush</code></a>。
             </p>
             <p>目前各种完善中可能遇到不稳定的情况请见谅！</p>
