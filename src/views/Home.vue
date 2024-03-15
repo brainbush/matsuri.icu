@@ -1,6 +1,7 @@
 <template>
     <div>
         <h1>{{head_text}}</h1>
+        <div class="alert alert-primary" role="alert">没钱了，被抓穷了，CDN买不起了，告辞~</div>
         <div class="form-group">
             <label for="search_input"> </label>
             <input type="text" v-model="search_query" class="form-control col-12" id="search_input" placeholder="搜索">
